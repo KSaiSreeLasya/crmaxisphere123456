@@ -18,6 +18,7 @@ interface Lead {
   statusId?: string;
   nextReminder?: string;
   note?: string;
+  assigned_to?: string;
 }
 
 interface LeadStatus {
@@ -25,6 +26,12 @@ interface LeadStatus {
   name: string;
   order_index: number;
   color: string;
+}
+
+interface SalesPerson {
+  id: string;
+  name: string;
+  email: string;
 }
 
 interface LeadsFormProps {
@@ -64,9 +71,11 @@ export default function LeadsForm({
   const [keywordInput, setKeywordInput] = useState("");
   const [linkInput, setLinkInput] = useState("");
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
+  const [salesPersons, setSalesPersons] = useState<SalesPerson[]>([]);
 
   useEffect(() => {
     fetchStatuses();
+    fetchSalesPersons();
   }, []);
 
   const fetchStatuses = async () => {
@@ -78,6 +87,19 @@ export default function LeadsForm({
       if (data) setStatuses(data);
     } catch (error) {
       console.error("Error fetching statuses:", error);
+    }
+  };
+
+  const fetchSalesPersons = async () => {
+    try {
+      const { data } = await supabase
+        .from("sales_persons")
+        .select("id, name, email")
+        .eq("status", "active")
+        .order("name");
+      if (data) setSalesPersons(data);
+    } catch (error) {
+      console.error("Error fetching sales persons:", error);
     }
   };
 
