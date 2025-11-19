@@ -60,6 +60,7 @@ export default function LeadsForm({
       statusId: "",
       nextReminder: "",
       note: "",
+      assignedTo: "",
     },
   );
 
