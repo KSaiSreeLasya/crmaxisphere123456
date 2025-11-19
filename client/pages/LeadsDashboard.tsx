@@ -268,12 +268,6 @@ export default function LeadsDashboard() {
         )}
       </div>
 
-      {showForm && (
-        <LeadsForm
-          onSubmit={handleAddLead}
-          onClose={() => setShowForm(false)}
-        />
-      )}
     </Layout>
   );
 }
