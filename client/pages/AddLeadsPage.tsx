@@ -148,6 +148,7 @@ export default function AddLeadsPage() {
           notes: formData.note || formData.actions || null,
           next_reminder: formData.nextReminder || null,
           status_id: statusId,
+          assigned_to: formData.assignedTo || null,
           created_by: user.id,
         })
         .select()
