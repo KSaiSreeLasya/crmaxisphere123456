@@ -103,110 +103,124 @@ export default function InvoiceDetail() {
         <head>
           <title>Invoice ${invoice.invoice_number}</title>
           <style>
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
             body {
               font-family: Arial, sans-serif;
-              margin: 0;
-              padding: 20px;
               background-color: #f5f5f5;
             }
-            .invoice-container {
+            .page {
               background-color: white;
-              padding: 40px;
-              max-width: 900px;
-              margin: 0 auto;
+              width: 8.5in;
+              height: 11in;
+              margin: 20px auto;
+              padding: 0.5in;
               box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+              page-break-after: always;
+            }
+            .page:last-child {
+              margin-bottom: 20px;
+            }
+            .logo-header {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              margin-bottom: 20px;
+              padding-bottom: 15px;
+              border-bottom: 2px solid #f0f0f0;
+            }
+            .logo-circle {
+              width: 50px;
+              height: 50px;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-weight: bold;
+              font-size: 24px;
+            }
+            .company-header {
+              flex: 1;
+            }
+            .company-header h1 {
+              margin: 0;
+              font-size: 24px;
+              color: #333;
+            }
+            .company-header p {
+              margin: 2px 0;
+              color: #666;
+              font-size: 12px;
             }
             .header {
               display: flex;
               justify-content: space-between;
-              align-items: start;
-              margin-bottom: 40px;
-              border-bottom: 2px solid #f0f0f0;
-              padding-bottom: 20px;
-            }
-            .company-info h1 {
-              margin: 0;
-              font-size: 28px;
-              color: #333;
-            }
-            .company-info p {
-              margin: 5px 0;
-              color: #666;
-              font-size: 14px;
+              margin-bottom: 25px;
             }
             .invoice-meta {
               text-align: right;
             }
             .invoice-meta p {
-              margin: 5px 0;
+              margin: 3px 0;
               color: #666;
+              font-size: 12px;
             }
             .invoice-number {
-              font-size: 18px;
+              font-size: 14px;
               font-weight: bold;
               color: #333;
             }
             .section {
-              margin-bottom: 30px;
+              margin-bottom: 20px;
             }
             .section-title {
-              font-size: 14px;
+              font-size: 12px;
               font-weight: bold;
               color: #333;
               text-transform: uppercase;
-              margin-bottom: 15px;
+              margin-bottom: 10px;
               border-bottom: 1px solid #e0e0e0;
-              padding-bottom: 10px;
+              padding-bottom: 8px;
             }
             .bill-to {
               display: flex;
-              gap: 40px;
+              gap: 30px;
+              font-size: 13px;
             }
             .bill-to-item {
               flex: 1;
             }
             .bill-to-item h3 {
-              font-size: 12px;
+              font-size: 11px;
               color: #999;
               text-transform: uppercase;
-              margin: 0 0 10px 0;
+              margin: 0 0 5px 0;
+              font-weight: bold;
             }
             .bill-to-item p {
-              margin: 5px 0;
+              margin: 2px 0;
               color: #333;
-            }
-            .features {
-              margin-bottom: 30px;
-            }
-            .feature-item {
-              display: flex;
-              align-items: center;
-              padding: 10px 0;
-              border-bottom: 1px solid #f0f0f0;
-              font-size: 14px;
-              color: #333;
-            }
-            .feature-check {
-              color: #22c55e;
-              font-weight: bold;
-              margin-right: 15px;
-              min-width: 20px;
             }
             .pricing-table {
               width: 100%;
-              margin-top: 30px;
               border-collapse: collapse;
+              font-size: 12px;
             }
             .pricing-table th {
               background-color: #f9f9f9;
-              padding: 12px;
+              padding: 8px;
               text-align: right;
               font-weight: bold;
               color: #333;
               border-bottom: 2px solid #e0e0e0;
             }
             .pricing-table td {
-              padding: 12px;
+              padding: 8px;
               text-align: right;
               color: #333;
               border-bottom: 1px solid #f0f0f0;
@@ -221,167 +235,240 @@ export default function InvoiceDetail() {
             .total-amount {
               background-color: #6b46c1;
               color: white;
-              font-size: 16px;
+              font-size: 13px;
             }
             .total-amount-value {
               color: white;
             }
+            .features-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 12px;
+              font-size: 12px;
+            }
+            .feature-item {
+              display: flex;
+              align-items: flex-start;
+              gap: 8px;
+              padding: 10px;
+              background-color: #f0f8f4;
+              border-radius: 4px;
+            }
+            .feature-check {
+              color: #22c55e;
+              font-weight: bold;
+              min-width: 20px;
+              flex-shrink: 0;
+            }
+            .feature-text {
+              color: #333;
+              line-height: 1.3;
+            }
             .footer {
-              margin-top: 40px;
-              padding-top: 20px;
+              margin-top: 15px;
+              padding-top: 15px;
               border-top: 1px solid #e0e0e0;
               color: #666;
-              font-size: 13px;
+              font-size: 11px;
               text-align: center;
+              position: absolute;
+              bottom: 20px;
+              width: calc(100% - 40px);
+            }
+            .page {
+              position: relative;
+              min-height: 11in;
+            }
+            .page-content {
+              padding-bottom: 60px;
             }
             @media print {
               body {
                 background-color: white;
+                margin: 0;
                 padding: 0;
               }
-              .invoice-container {
+              .page {
+                margin: 0;
+                padding: 0.5in;
                 box-shadow: none;
-                padding: 20px;
+                page-break-after: always;
+                width: 100%;
+                height: auto;
               }
             }
           </style>
         </head>
         <body>
-          <div class="invoice-container">
-            <!-- Header -->
-            <div class="header">
-              <div class="company-info">
-                <h1>Axisphere</h1>
-                <p>Axisphere Sales CRM</p>
-                <p>Invoice Bill</p>
-              </div>
-              <div class="invoice-meta">
-                <p class="invoice-number">Invoice Number: ${invoice.invoice_number}</p>
-                <p><strong>Invoice Date:</strong> ${new Date(
-                  invoice.created_at,
-                ).toLocaleDateString("en-IN")}</p>
-                <p><strong>Due Date:</strong> ${new Date(
-                  new Date(invoice.created_at).getTime() +
-                    30 * 24 * 60 * 60 * 1000,
-                ).toLocaleDateString("en-IN")}</p>
-              </div>
-            </div>
-
-            <!-- Bill To Section -->
-            <div class="section">
-              <div class="section-title">BILL TO</div>
-              <div class="bill-to">
-                <div class="bill-to-item">
-                  <h3>Name</h3>
-                  <p>${invoice.customer_name}</p>
-                </div>
-                <div class="bill-to-item">
-                  <h3>Email</h3>
-                  <p>${invoice.customer_email || "N/A"}</p>
-                </div>
-                <div class="bill-to-item">
-                  <h3>Phone</h3>
-                  <p>${invoice.customer_phone || "N/A"}</p>
+          <!-- PAGE 1: Invoice Details -->
+          <div class="page">
+            <div class="page-content">
+              <!-- Logo and Company Header -->
+              <div class="logo-header">
+                <div class="logo-circle">AXI</div>
+                <div class="company-header">
+                  <h1>Axisphere</h1>
+                  <p>Axisphere Sales CRM</p>
+                  <p>Invoice Bill</p>
                 </div>
               </div>
-            </div>
 
-            <!-- Package Details -->
-            <div class="section">
-              <div class="section-title">Description</div>
-              <table class="pricing-table" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                  <tr style="border-bottom: 2px solid #e0e0e0;">
-                    <th style="text-align: left; padding: 12px; font-weight: bold;">Description</th>
-                    <th style="text-align: right; padding: 12px; font-weight: bold;">Qty</th>
-                    <th style="text-align: right; padding: 12px; font-weight: bold;">Rate</th>
-                    <th style="text-align: right; padding: 12px; font-weight: bold;">Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="border-bottom: 1px solid #f0f0f0;">
-                    <td style="text-align: left; padding: 12px;">${
-                      invoice.packages?.name || "Package"
-                    } - Full Package</td>
-                    <td style="text-align: right; padding: 12px;">1</td>
-                    <td style="text-align: right; padding: 12px;">₹${invoice.base_price.toLocaleString(
-                      "en-IN",
-                    )}</td>
-                    <td style="text-align: right; padding: 12px;">₹${invoice.base_price.toLocaleString(
-                      "en-IN",
-                    )}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+              <!-- Header with Invoice Meta -->
+              <div class="header">
+                <div></div>
+                <div class="invoice-meta">
+                  <p class="invoice-number">Invoice Number: ${invoice.invoice_number}</p>
+                  <p><strong>Invoice Date:</strong> ${new Date(
+                    invoice.created_at,
+                  ).toLocaleDateString("en-IN")}</p>
+                  <p><strong>Due Date:</strong> ${new Date(
+                    new Date(invoice.created_at).getTime() +
+                      30 * 24 * 60 * 60 * 1000,
+                  ).toLocaleDateString("en-IN")}</p>
+                  <p><strong>Payment Terms:</strong> Due within 30 days</p>
+                </div>
+              </div>
 
-            <!-- Features -->
-            ${
-              invoice.packages && invoice.packages.features.length > 0
-                ? `
-            <div class="section">
-              <div class="section-title">Package Scope & Features</div>
-              <div class="features">
-                ${invoice.packages.features
-                  .map(
-                    (feature) => `
-                  <div class="feature-item">
-                    <div class="feature-check">✓</div>
-                    <div>${feature}</div>
+              <!-- Bill To Section -->
+              <div class="section">
+                <div class="section-title">BILL TO</div>
+                <div class="bill-to">
+                  <div class="bill-to-item">
+                    <h3>Name</h3>
+                    <p>${invoice.customer_name}</p>
                   </div>
-                `,
-                  )
-                  .join("")}
+                  <div class="bill-to-item">
+                    <h3>Email</h3>
+                    <p>${invoice.customer_email || "N/A"}</p>
+                  </div>
+                  <div class="bill-to-item">
+                    <h3>Phone</h3>
+                    <p>${invoice.customer_phone || "N/A"}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-            `
-                : ""
-            }
 
-            <!-- Pricing -->
-            <table class="pricing-table">
-              <tbody>
-                <tr>
-                  <td class="pricing-label">Subtotal</td>
-                  <td>₹${invoice.base_price.toLocaleString("en-IN")}</td>
-                </tr>
-                <tr>
-                  <td class="pricing-label">Tax (${invoice.gst_percentage}% GST)</td>
-                  <td>₹${invoice.gst_amount.toLocaleString("en-IN", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}</td>
-                </tr>
-                <tr class="total-row total-amount">
-                  <td class="pricing-label total-amount-value">Total Amount Due</td>
-                  <td class="total-amount-value">₹${invoice.total_amount.toLocaleString(
-                    "en-IN",
-                    {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    },
-                  )}</td>
-                </tr>
-              </tbody>
-            </table>
+              <!-- Package Details -->
+              <div class="section">
+                <div class="section-title">Description</div>
+                <table class="pricing-table">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left;">Description</th>
+                      <th>Qty</th>
+                      <th>Rate</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: left;">${
+                        invoice.packages?.name || "Package"
+                      } - Full Package</td>
+                      <td>1</td>
+                      <td>₹${invoice.base_price.toLocaleString("en-IN")}</td>
+                      <td>₹${invoice.base_price.toLocaleString("en-IN")}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-            ${
-              invoice.additional_notes
-                ? `
-            <div class="section" style="margin-top: 30px;">
-              <div class="section-title">Additional Notes</div>
-              <p style="color: #666; line-height: 1.6;">${invoice.additional_notes}</p>
+              <!-- Pricing -->
+              <div class="section">
+                <table class="pricing-table">
+                  <tbody>
+                    <tr>
+                      <td class="pricing-label">Subtotal</td>
+                      <td>₹${invoice.base_price.toLocaleString("en-IN")}</td>
+                    </tr>
+                    <tr>
+                      <td class="pricing-label">Tax (${invoice.gst_percentage}% GST)</td>
+                      <td>₹${invoice.gst_amount.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}</td>
+                    </tr>
+                    <tr class="total-row total-amount">
+                      <td class="pricing-label total-amount-value">Total Amount Due</td>
+                      <td class="total-amount-value">₹${invoice.total_amount.toLocaleString(
+                        "en-IN",
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        },
+                      )}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              ${
+                invoice.additional_notes
+                  ? `
+              <div class="section">
+                <div class="section-title">Additional Notes</div>
+                <p style="color: #666; line-height: 1.5; font-size: 12px;">${invoice.additional_notes}</p>
+              </div>
+              `
+                  : ""
+              }
             </div>
-            `
-                : ""
-            }
 
             <!-- Footer -->
             <div class="footer">
               <p>Thank you for your business! For inquiries, contact hello@axisphere.in</p>
-              <p style="margin-top: 10px;">© 2025 Axisphere. All rights reserved.</p>
+              <p style="margin-top: 5px;">© 2025 Axisphere. All rights reserved.</p>
             </div>
           </div>
+
+          <!-- PAGE 2: Features (if there are features) -->
+          ${
+            invoice.packages && invoice.packages.features.length > 0
+              ? `
+          <div class="page">
+            <div class="page-content">
+              <!-- Logo and Company Header -->
+              <div class="logo-header">
+                <div class="logo-circle">AXI</div>
+                <div class="company-header">
+                  <h1>Axisphere</h1>
+                  <p>Axisphere Sales CRM</p>
+                  <p>Invoice Bill</p>
+                </div>
+              </div>
+
+              <!-- Invoice Number Reference -->
+              <div style="font-size: 12px; color: #666; margin-bottom: 20px;">
+                <strong>Invoice Number:</strong> ${invoice.invoice_number}
+              </div>
+
+              <!-- Features Section -->
+              <div class="section">
+                <div class="section-title">Package Scope & Features</div>
+                <div class="features-grid">
+                  ${invoice.packages.features
+                    .map(
+                      (feature) => `
+                    <div class="feature-item">
+                      <div class="feature-check">✓</div>
+                      <div class="feature-text">${feature}</div>
+                    </div>
+                  `,
+                    )
+                    .join("")}
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+              <p>Thank you for your business! For inquiries, contact hello@axisphere.in</p>
+              <p style="margin-top: 5px;">© 2025 Axisphere. All rights reserved.</p>
+            </div>
+          </div>
+          `
+              : ""
+          }
         </body>
       </html>
     `;
