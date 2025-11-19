@@ -253,11 +253,9 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => {
-                        setEditingSalesPerson(person);
-                        setShowSalesPersonForm(true);
-                      }}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-input text-foreground rounded-lg hover:bg-secondary transition-colors"
+                      disabled
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-input text-foreground rounded-lg hover:bg-secondary transition-colors opacity-50 cursor-not-allowed"
+                      title="Edit functionality coming soon"
                     >
                       <Edit className="w-4 h-4" />
                       Edit
