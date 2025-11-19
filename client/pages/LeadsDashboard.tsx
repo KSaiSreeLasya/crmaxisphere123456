@@ -101,7 +101,8 @@ export default function LeadsDashboard() {
 
   const handleAddLead = async (data: any) => {
     try {
-      const statusId = data.statusId || statuses.find((s) => s.name === "No Stage")?.id;
+      const statusId =
+        data.statusId || statuses.find((s) => s.name === "No Stage")?.id;
       if (!statusId) return;
 
       await supabase.from("leads").insert({
@@ -274,7 +275,9 @@ export default function LeadsDashboard() {
                         {lead.next_reminder && (
                           <p className="text-foreground flex items-center gap-1">
                             <Clock className="w-4 h-4" />
-                            <span className="font-medium">Next Reminder:</span>{" "}
+                            <span className="font-medium">
+                              Next Reminder:
+                            </span>{" "}
                             {new Date(lead.next_reminder).toLocaleDateString()}
                           </p>
                         )}

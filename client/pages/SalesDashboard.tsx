@@ -1,5 +1,12 @@
 import Layout from "@/components/Layout";
-import { Users, Target, TrendingUp, Award, Clock, AlertCircle } from "lucide-react";
+import {
+  Users,
+  Target,
+  TrendingUp,
+  Award,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
