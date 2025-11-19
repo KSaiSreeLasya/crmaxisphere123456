@@ -18,6 +18,7 @@ import AddLeadsPage from "./pages/AddLeadsPage";
 import AddSalesPersonPage from "./pages/AddSalesPersonPage";
 import SalesDashboard from "./pages/SalesDashboard";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import InvoicesPage from "./pages/InvoicesPage";
 
 const queryClient = new QueryClient();
 
@@ -129,6 +130,22 @@ const AppContent = () => {
         element={
           <ProtectedRoute>
             <AnalyticsDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/invoices"
+        element={
+          <ProtectedRoute>
+            <InvoicesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/invoices"
+        element={
+          <ProtectedRoute>
+            <InvoicesPage />
           </ProtectedRoute>
         }
       />
