@@ -1,7 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Users, TrendingUp, BarChart3, Zap, Shield, Clock } from "lucide-react";
+import { useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Index() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/admin");
+    }
+  }, [user, loading, navigate]);
   const features = [
     {
       icon: Users,
