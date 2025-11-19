@@ -266,7 +266,10 @@ export default function AddLeadsPage() {
 
     const digitsOnly = trimmedPhone.replace(/\D/g, "");
     if (!/^\d{10,}$/.test(digitsOnly)) {
-      setErrors({ ...errors, phone: "Phone number must be at least 10 digits" });
+      setErrors({
+        ...errors,
+        phone: "Phone number must be at least 10 digits",
+      });
       return;
     }
 

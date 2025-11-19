@@ -2,7 +2,15 @@ import { useState, useEffect } from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { Bell, Users, TrendingUp, Eye, Calendar, Mail, Phone } from "lucide-react";
+import {
+  Bell,
+  Users,
+  TrendingUp,
+  Eye,
+  Calendar,
+  Mail,
+  Phone,
+} from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 
@@ -101,8 +109,12 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto">
           {/* Welcome Banner */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-8 mb-8 text-white shadow-lg">
-            <h1 className="text-3xl font-bold mb-2">Welcome to Axisphere CRM</h1>
-            <p className="text-blue-100 mb-6">Manage your sales team and team efficiently</p>
+            <h1 className="text-3xl font-bold mb-2">
+              Welcome to Axisphere CRM
+            </h1>
+            <p className="text-blue-100 mb-6">
+              Manage your sales team and team efficiently
+            </p>
             <div className="flex gap-4">
               <button
                 onClick={() => navigate("/leads")}
@@ -124,35 +136,49 @@ export default function AdminDashboard() {
             {/* My Assigned Leads */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-gray-600 font-medium text-sm">My Assigned Leads</h3>
+                <h3 className="text-gray-600 font-medium text-sm">
+                  My Assigned Leads
+                </h3>
                 <Eye className="w-5 h-5 text-blue-400" />
               </div>
-              <p className="text-4xl font-bold text-gray-900">{assignedLeads}</p>
+              <p className="text-4xl font-bold text-gray-900">
+                {assignedLeads}
+              </p>
             </div>
 
             {/* Upcoming Reminders */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-gray-600 font-medium text-sm">Upcoming Reminders</h3>
+                <h3 className="text-gray-600 font-medium text-sm">
+                  Upcoming Reminders
+                </h3>
                 <Bell className="w-5 h-5 text-yellow-400" />
               </div>
-              <p className="text-4xl font-bold text-gray-900">{upcomingReminders}</p>
+              <p className="text-4xl font-bold text-gray-900">
+                {upcomingReminders}
+              </p>
             </div>
 
             {/* Total Sales Persons */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-gray-600 font-medium text-sm">Total Sales Persons</h3>
+                <h3 className="text-gray-600 font-medium text-sm">
+                  Total Sales Persons
+                </h3>
                 <Users className="w-5 h-5 text-green-400" />
               </div>
-              <p className="text-4xl font-bold text-gray-900">{salesPersons.length}</p>
+              <p className="text-4xl font-bold text-gray-900">
+                {salesPersons.length}
+              </p>
             </div>
           </div>
 
           {/* Upcoming Reminders Section */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">Upcoming Reminders</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Upcoming Reminders
+              </h2>
               <span className="text-sm text-gray-500">0 total</span>
             </div>
             <div className="flex flex-col items-center justify-center py-12">
@@ -160,13 +186,17 @@ export default function AdminDashboard() {
                 <Bell className="w-6 h-6 text-green-600" />
               </div>
               <p className="text-gray-600 font-medium">No upcoming reminders</p>
-              <p className="text-gray-400 text-sm">All your tasks are up to date</p>
+              <p className="text-gray-400 text-sm">
+                All your tasks are up to date
+              </p>
             </div>
           </div>
 
           {/* Next 7 Days Summary */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-8">
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">Next 7 Days Summary</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">
+              Next 7 Days Summary
+            </h2>
             <div className="grid grid-cols-3 gap-6">
               <div className="text-center">
                 <p className="text-3xl font-bold text-gray-900">0</p>
@@ -188,7 +218,9 @@ export default function AdminDashboard() {
             {/* Recent Leads */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Leads</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Recent Leads
+                </h2>
                 <button
                   onClick={() => navigate("/leads")}
                   className="text-blue-600 text-sm font-medium hover:text-blue-700"
@@ -209,15 +241,21 @@ export default function AdminDashboard() {
               ) : (
                 <div className="space-y-4">
                   {leads.slice(0, 3).map((lead) => {
-                    const status = statuses.find((s) => s.id === lead.status_id);
+                    const status = statuses.find(
+                      (s) => s.id === lead.status_id,
+                    );
                     return (
                       <div
                         key={lead.id}
                         className="flex items-start justify-between py-3 border-b border-gray-100 last:border-b-0"
                       >
                         <div>
-                          <p className="font-medium text-gray-900">{lead.name}</p>
-                          <p className="text-sm text-gray-500">{lead.company}</p>
+                          <p className="font-medium text-gray-900">
+                            {lead.name}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {lead.company}
+                          </p>
                         </div>
                         <span
                           className={`text-xs font-semibold px-3 py-1 rounded ${getStatusColor(
@@ -236,7 +274,9 @@ export default function AdminDashboard() {
             {/* Recent Sales Persons */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Sales Persons</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Recent Sales Persons
+                </h2>
                 <button
                   onClick={() => navigate("/admin/sales-persons/add")}
                   className="text-blue-600 text-sm font-medium hover:text-blue-700"
@@ -266,7 +306,9 @@ export default function AdminDashboard() {
                         className="flex items-start justify-between py-3 border-b border-gray-100 last:border-b-0"
                       >
                         <div>
-                          <p className="font-medium text-gray-900">{person.name}</p>
+                          <p className="font-medium text-gray-900">
+                            {person.name}
+                          </p>
                           <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
                             <Mail className="w-3 h-3" />
                             {person.email}
@@ -285,29 +327,45 @@ export default function AdminDashboard() {
 
           {/* Quick Stats */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">Quick Stats</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">
+              Quick Stats
+            </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="text-center">
-                <p className="text-3xl font-bold text-gray-900">{leads.length}</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {leads.length}
+                </p>
                 <p className="text-gray-500 text-sm mt-2">Total Leads</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-gray-900">{salesPersons.length}</p>
-                <p className="text-gray-500 text-sm mt-2">Total Sales Persons</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {salesPersons.length}
+                </p>
+                <p className="text-gray-500 text-sm mt-2">
+                  Total Sales Persons
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-bold text-gray-900">
-                  {leads.filter((l) =>
-                    statuses.find((s) => s.id === l.status_id && s.name === "Email"),
-                  ).length}
+                  {
+                    leads.filter((l) =>
+                      statuses.find(
+                        (s) => s.id === l.status_id && s.name === "Email",
+                      ),
+                    ).length
+                  }
                 </p>
                 <p className="text-gray-500 text-sm mt-2">Leads with Email</p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-bold text-gray-900">
-                  {leads.filter((l) =>
-                    statuses.find((s) => s.id === l.status_id && s.name === "Phone"),
-                  ).length}
+                  {
+                    leads.filter((l) =>
+                      statuses.find(
+                        (s) => s.id === l.status_id && s.name === "Phone",
+                      ),
+                    ).length
+                  }
                 </p>
                 <p className="text-gray-500 text-sm mt-2">Leads with Phone</p>
               </div>
