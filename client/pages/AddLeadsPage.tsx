@@ -115,13 +115,27 @@ export default function AddLeadsPage() {
 
     setLoading(true);
     try {
+      // Verify user is authenticated
+      if (!user?.id) {
+        throw new Error(
+          "You must be logged in to create a lead. Please refresh the page."
+        );
+      }
+
       const statusId =
         formData.statusId || statuses.find((s) => s.name === "No Stage")?.id;
       if (!statusId) {
-        setErrors({ submit: "No default status available" });
-        setLoading(false);
-        return;
+        throw new Error(
+          "No default status available. Please select a status or contact support."
+        );
       }
+
+      console.log("Creating lead with data:", {
+        name: formData.name,
+        company: formData.company,
+        status_id: statusId,
+        user_id: user.id,
+      });
 
       // Create the lead
       const { data: leadData, error: leadError } = await supabase
@@ -129,34 +143,40 @@ export default function AddLeadsPage() {
         .insert({
           name: formData.name,
           company: formData.company,
-          job_title: formData.jobTitle,
-          location: formData.location,
-          company_size: formData.companySize,
-          industries: formData.industries,
-          keywords: formData.keywords,
-          links: formData.links,
-          notes: formData.note || formData.actions,
+          job_title: formData.jobTitle || null,
+          location: formData.location || null,
+          company_size: formData.companySize || null,
+          industries: formData.industries.length > 0 ? formData.industries : null,
+          keywords: formData.keywords.length > 0 ? formData.keywords : null,
+          links: formData.links.length > 0 ? formData.links : null,
+          notes: formData.note || formData.actions || null,
           next_reminder: formData.nextReminder || null,
           status_id: statusId,
-          created_by: user?.id,
+          created_by: user.id,
         })
         .select()
         .single();
 
       if (leadError) {
-        console.error("Lead creation error:", leadError);
-        const errorMsg =
-          leadError.message ||
-          JSON.stringify(leadError) ||
-          "Failed to create lead";
-        throw new Error(errorMsg);
+        console.error("Lead creation error details:", {
+          message: leadError.message,
+          code: (leadError as any).code,
+          details: (leadError as any).details,
+          hint: (leadError as any).hint,
+        });
+        throw new Error(
+          leadError.message || "Failed to create lead in database"
+        );
       }
 
       if (!leadData?.id) {
         throw new Error("Lead was created but no ID was returned");
       }
 
+      console.log("Lead created successfully with ID:", leadData.id);
+
       // Add emails
+      let emailsAdded = 0;
       for (const email of formData.emails) {
         const { error: emailError } = await supabase
           .from("lead_emails")
@@ -165,11 +185,14 @@ export default function AddLeadsPage() {
             email,
           });
         if (emailError) {
-          console.error("Error adding email:", emailError);
+          console.error("Error adding email:", email, emailError);
+        } else {
+          emailsAdded++;
         }
       }
 
       // Add phones
+      let phonesAdded = 0;
       for (const phone of formData.phones) {
         const { error: phoneError } = await supabase
           .from("lead_phones")
@@ -178,9 +201,15 @@ export default function AddLeadsPage() {
             phone,
           });
         if (phoneError) {
-          console.error("Error adding phone:", phoneError);
+          console.error("Error adding phone:", phone, phoneError);
+        } else {
+          phonesAdded++;
         }
       }
+
+      console.log(
+        `Lead created successfully. Emails: ${emailsAdded}/${formData.emails.length}, Phones: ${phonesAdded}/${formData.phones.length}`
+      );
 
       navigate("/leads");
     } catch (error) {
