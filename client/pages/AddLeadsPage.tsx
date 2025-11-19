@@ -252,7 +252,11 @@ export default function AddLeadsPage() {
     setEmailInput("");
     // Clear contact error when successfully added
     if (updatedEmails.length > 0) {
-      setErrors({});
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.contact;
+        return newErrors;
+      });
     }
   };
 
