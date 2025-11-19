@@ -55,6 +55,7 @@ CREATE INDEX IF NOT EXISTS idx_invoices_package_id ON invoices(package_id);
 ## Step 2: Set Up Default Packages
 
 The default packages will be created automatically when the app's seeding process runs. When you load the application, it will:
+
 - Create three default packages:
   - **AI Starter Package** - ₹30,000
   - **AI Growth Package** - ₹75,000
@@ -81,6 +82,7 @@ These are created automatically by the seed script if they don't exist.
 ## Invoice Features
 
 Each invoice includes:
+
 - Unique invoice number (format: AXI-YYYYMMDD-XXXX)
 - Customer information (name, email, phone, company)
 - Package details with all features listed
@@ -92,22 +94,26 @@ Each invoice includes:
 ## Troubleshooting
 
 ### If you get "Invalid Request" errors:
+
 - Make sure the database tables are created (check Supabase SQL Editor)
 - Verify the foreign key constraints are set up correctly
 - Check that your Supabase environment variables are set
 
 ### If the Invoice menu doesn't appear:
+
 - You must be logged in as an admin user
 - Only admin users can access the invoices feature
 - Refresh the page after setting up the database tables
 
 ### If you can't create invoices:
+
 - Ensure the packages table is populated (run the seed again or manually insert packages)
 - Verify the foreign key relationship between invoices and packages
 
 ## Environment Variables
 
 The following environment variables are required (should already be set):
+
 ```
 VITE_SUPABASE_URL=https://mziquefoqaubxhrchkft.supabase.co
 VITE_SUPABASE_ANON_KEY=Uu4d8CyyxJinOM
@@ -116,6 +122,7 @@ VITE_SUPABASE_ANON_KEY=Uu4d8CyyxJinOM
 ## Next Steps
 
 After setup:
+
 1. Log in as an admin user
 2. Navigate to the Invoices section
 3. Create your first invoice

@@ -44,7 +44,7 @@ export default function InvoiceList() {
           total_amount,
           created_at,
           packages(name)
-        `
+        `,
         )
         .order("created_at", { ascending: false });
 
@@ -60,7 +60,7 @@ export default function InvoiceList() {
   const handleDelete = async (id: string) => {
     if (
       !window.confirm(
-        "Are you sure you want to delete this invoice? This action cannot be undone."
+        "Are you sure you want to delete this invoice? This action cannot be undone.",
       )
     ) {
       return;
@@ -194,9 +194,7 @@ export default function InvoiceList() {
                           <div className="flex items-center gap-3">
                             <button
                               onClick={() =>
-                                navigate(
-                                  `/admin/invoices/${invoice.id}`
-                                )
+                                navigate(`/admin/invoices/${invoice.id}`)
                               }
                               className="p-2 hover:bg-blue-50 rounded transition-colors"
                               title="View invoice"

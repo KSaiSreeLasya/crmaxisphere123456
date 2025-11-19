@@ -80,7 +80,8 @@ export const handleSeed: RequestHandler = async (req, res) => {
         {
           name: "AI Starter Package",
           price: 30000,
-          description: "Scalable, results-driven solutions designed to grow with your business.",
+          description:
+            "Scalable, results-driven solutions designed to grow with your business.",
           features: [
             "20 AI-generated social media posts per month",
             "24 optimized blog articles (800-1200 words each)",
@@ -94,7 +95,8 @@ export const handleSeed: RequestHandler = async (req, res) => {
         {
           name: "AI Growth Package",
           price: 75000,
-          description: "Scalable, results-driven solutions designed to grow with your business.",
+          description:
+            "Scalable, results-driven solutions designed to grow with your business.",
           features: [
             "50 AI-generated social media posts per month",
             "8 optimized blog articles (800-1200 words each)",
@@ -109,7 +111,8 @@ export const handleSeed: RequestHandler = async (req, res) => {
         {
           name: "AI Enterprise Package",
           price: 150000,
-          description: "Scalable, results-driven solutions designed to grow with your business.",
+          description:
+            "Scalable, results-driven solutions designed to grow with your business.",
           features: [
             "100+ AI-generated social media posts per month",
             "15 AI-optimized long-form content with advanced SEO",

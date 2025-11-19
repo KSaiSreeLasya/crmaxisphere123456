@@ -159,9 +159,7 @@ export default function CreateInvoice() {
       toast({
         title: "Error",
         description:
-          error instanceof Error
-            ? error.message
-            : "Failed to create invoice",
+          error instanceof Error ? error.message : "Failed to create invoice",
         variant: "destructive",
       });
     } finally {
@@ -170,7 +168,7 @@ export default function CreateInvoice() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -421,7 +419,8 @@ export default function CreateInvoice() {
                       GST Amount ({formData.gstPercentage}%)
                     </span>
                     <span className="font-medium text-gray-900">
-                      ₹{gstAmount.toLocaleString("en-IN", {
+                      ₹
+                      {gstAmount.toLocaleString("en-IN", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
@@ -433,7 +432,8 @@ export default function CreateInvoice() {
                       Total Amount Due
                     </span>
                     <span className="text-2xl font-bold text-purple-600">
-                      ₹{totalAmount.toLocaleString("en-IN", {
+                      ₹
+                      {totalAmount.toLocaleString("en-IN", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
