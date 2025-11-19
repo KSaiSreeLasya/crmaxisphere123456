@@ -39,8 +39,8 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user?.role !== "admin") {
-      window.location.href = "/leads";
+    if (!user) {
+      window.location.href = "/login";
       return;
     }
     fetchData();
