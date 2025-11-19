@@ -63,7 +63,7 @@ export default function AddSalesPersonPage() {
       // Verify admin is authenticated
       if (!user?.id) {
         throw new Error(
-          "You must be logged in to add a sales person. Please refresh the page."
+          "You must be logged in to add a sales person. Please refresh the page.",
         );
       }
 
@@ -103,16 +103,14 @@ export default function AddSalesPersonPage() {
       }
 
       // Create sales person record
-      const { error: spError } = await supabase
-        .from("sales_persons")
-        .insert({
-          user_id: userData.id,
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          status: "active",
-          created_by: user.id,
-        });
+      const { error: spError } = await supabase.from("sales_persons").insert({
+        user_id: userData.id,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        status: "active",
+        created_by: user.id,
+      });
 
       if (spError) {
         console.error("Sales person creation error:", {
@@ -121,7 +119,7 @@ export default function AddSalesPersonPage() {
           details: (spError as any).details,
         });
         throw new Error(
-          spError.message || "Failed to create sales person record"
+          spError.message || "Failed to create sales person record",
         );
       }
 

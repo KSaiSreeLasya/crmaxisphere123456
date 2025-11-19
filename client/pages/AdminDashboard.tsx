@@ -75,7 +75,6 @@ export default function AdminDashboard() {
     }
   };
 
-
   const handleDeleteSalesPerson = async (id: string) => {
     try {
       await supabase.from("sales_persons").delete().eq("id", id);
@@ -84,7 +83,6 @@ export default function AdminDashboard() {
       console.error("Error deleting sales person:", error);
     }
   };
-
 
   const handleDeleteLead = async (id: string) => {
     try {
@@ -422,7 +420,6 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
-
     </Layout>
   );
 }

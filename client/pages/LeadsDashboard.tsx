@@ -267,7 +267,6 @@ export default function LeadsDashboard() {
           </div>
         )}
       </div>
-
     </Layout>
   );
 }

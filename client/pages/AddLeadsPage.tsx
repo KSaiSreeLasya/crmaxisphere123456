@@ -118,7 +118,7 @@ export default function AddLeadsPage() {
       // Verify user is authenticated
       if (!user?.id) {
         throw new Error(
-          "You must be logged in to create a lead. Please refresh the page."
+          "You must be logged in to create a lead. Please refresh the page.",
         );
       }
 
@@ -126,7 +126,7 @@ export default function AddLeadsPage() {
         formData.statusId || statuses.find((s) => s.name === "No Stage")?.id;
       if (!statusId) {
         throw new Error(
-          "No default status available. Please select a status or contact support."
+          "No default status available. Please select a status or contact support.",
         );
       }
 
@@ -146,7 +146,8 @@ export default function AddLeadsPage() {
           job_title: formData.jobTitle || null,
           location: formData.location || null,
           company_size: formData.companySize || null,
-          industries: formData.industries.length > 0 ? formData.industries : null,
+          industries:
+            formData.industries.length > 0 ? formData.industries : null,
           keywords: formData.keywords.length > 0 ? formData.keywords : null,
           links: formData.links.length > 0 ? formData.links : null,
           notes: formData.note || formData.actions || null,
@@ -165,7 +166,7 @@ export default function AddLeadsPage() {
           hint: (leadError as any).hint,
         });
         throw new Error(
-          leadError.message || "Failed to create lead in database"
+          leadError.message || "Failed to create lead in database",
         );
       }
 
@@ -208,7 +209,7 @@ export default function AddLeadsPage() {
       }
 
       console.log(
-        `Lead created successfully. Emails: ${emailsAdded}/${formData.emails.length}, Phones: ${phonesAdded}/${formData.phones.length}`
+        `Lead created successfully. Emails: ${emailsAdded}/${formData.emails.length}, Phones: ${phonesAdded}/${formData.phones.length}`,
       );
 
       navigate("/leads");
@@ -243,7 +244,7 @@ export default function AddLeadsPage() {
     const trimmedEmail = emailInput.trim();
     if (!trimmedEmail) return;
 
-    if (!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail))) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
       setErrors({ emails: "Please enter a valid email address" });
       return;
     }
@@ -330,7 +331,10 @@ export default function AddLeadsPage() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-8">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white rounded-xl shadow-lg p-8 space-y-8"
+          >
             {errors.submit && (
               <div className="p-4 bg-destructive/10 border border-destructive text-destructive rounded-lg">
                 {errors.submit}
