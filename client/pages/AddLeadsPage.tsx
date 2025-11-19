@@ -444,6 +444,12 @@ export default function AddLeadsPage() {
                 Contact Information
               </h3>
 
+              {errors.contact && (
+                <div className="p-3 bg-destructive/10 border border-destructive text-destructive rounded-lg text-sm">
+                  {errors.contact}
+                </div>
+              )}
+
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Emails <span className="text-destructive">*</span>
