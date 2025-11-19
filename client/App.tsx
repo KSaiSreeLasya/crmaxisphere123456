@@ -85,6 +85,14 @@ const AppContent = () => {
         }
       />
       <Route
+        path="/leads/add"
+        element={
+          <ProtectedRoute>
+            <AddLeadsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin/sales"
         element={
           <ProtectedRoute>
