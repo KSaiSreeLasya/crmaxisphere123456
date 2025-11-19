@@ -51,52 +51,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      // First try to authenticate with Supabase Auth
-      const { data: authData, error: authError } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-      if (authError || !authData.user) {
-        throw new Error("Invalid email or password");
-      }
-
-      // Try to get user details from users table
+      // Query users table directly
       const { data: users, error: userError } = await supabase
         .from("users")
         .select("*")
         .eq("email", email)
         .single();
 
-      // If user exists in users table, use those details
-      // Otherwise, create a basic user object from auth data
-      let userData: User;
-
-      if (users && !userError) {
-        if (!users.is_active) {
-          throw new Error("Account is inactive");
-        }
-
-        userData = {
-          id: users.id,
-          email: users.email,
-          first_name: users.first_name,
-          last_name: users.last_name,
-          role: users.role,
-          is_active: users.is_active,
-        };
-      } else {
-        // User authenticated but not in users table - create basic user object
-        userData = {
-          id: authData.user.id,
-          email: authData.user.email || "",
-          first_name: authData.user.user_metadata?.first_name || "",
-          last_name: authData.user.user_metadata?.last_name || "",
-          role: authData.user.user_metadata?.role || "sales",
-          is_active: true,
-        };
+      if (userError || !users) {
+        throw new Error("Invalid email or password");
       }
+
+      // Simple password check (in production, use bcrypt on backend)
+      if (users.password_hash !== password) {
+        throw new Error("Invalid email or password");
+      }
+
+      if (!users.is_active) {
+        throw new Error("Account is inactive");
+      }
+
+      const userData: User = {
+        id: users.id,
+        email: users.email,
+        first_name: users.first_name,
+        last_name: users.last_name,
+        role: users.role,
+        is_active: users.is_active,
+      };
 
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
