@@ -101,13 +101,21 @@ export default function AddLeadsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Clear previous errors
+    setErrors({});
+
     if (!validateForm()) return;
 
     setLoading(true);
     try {
       const statusId =
         formData.statusId || statuses.find((s) => s.name === "No Stage")?.id;
-      if (!statusId) return;
+      if (!statusId) {
+        setErrors({ submit: "No default status available" });
+        setLoading(false);
+        return;
+      }
 
       // Create the lead
       const { data: leadData, error: leadError } = await supabase
@@ -133,25 +141,34 @@ export default function AddLeadsPage() {
 
       // Add emails
       for (const email of formData.emails) {
-        await supabase.from("lead_emails").insert({
-          lead_id: leadData.id,
-          email,
-        });
+        const { error: emailError } = await supabase
+          .from("lead_emails")
+          .insert({
+            lead_id: leadData.id,
+            email,
+          });
+        if (emailError) console.error("Error adding email:", emailError);
       }
 
       // Add phones
       for (const phone of formData.phones) {
-        await supabase.from("lead_phones").insert({
-          lead_id: leadData.id,
-          phone,
-        });
+        const { error: phoneError } = await supabase
+          .from("lead_phones")
+          .insert({
+            lead_id: leadData.id,
+            phone,
+          });
+        if (phoneError) console.error("Error adding phone:", phoneError);
       }
 
       navigate("/leads");
     } catch (error) {
       console.error("Error adding lead:", error);
       setErrors({
-        submit: "Failed to add lead. Please try again.",
+        submit:
+          error instanceof Error
+            ? error.message
+            : "Failed to add lead. Please try again.",
       });
     } finally {
       setLoading(false);
