@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
@@ -11,7 +12,6 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
-import LeadsForm from "@/components/LeadsForm";
 
 interface LeadStatus {
   id: string;
