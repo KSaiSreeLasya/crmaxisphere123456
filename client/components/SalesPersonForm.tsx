@@ -26,7 +26,7 @@ export default function SalesPersonForm({
       email: "",
       phone: "",
       password: "",
-    }
+    },
   );
 
   const [errors, setErrors] = useState<Record<string, string>>({});

@@ -1,5 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Users, TrendingUp, BarChart3, Zap, Shield, Clock } from "lucide-react";
+import {
+  ArrowRight,
+  Users,
+  TrendingUp,
+  BarChart3,
+  Zap,
+  Shield,
+  Clock,
+} from "lucide-react";
 import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -16,32 +24,38 @@ export default function Index() {
     {
       icon: Users,
       title: "Sales Team Management",
-      description: "Manage your sales team with ease. Add, edit, and remove sales persons with comprehensive profiles.",
+      description:
+        "Manage your sales team with ease. Add, edit, and remove sales persons with comprehensive profiles.",
     },
     {
       icon: TrendingUp,
       title: "Lead Management",
-      description: "Track and manage leads effectively with detailed information including company details and contact methods.",
+      description:
+        "Track and manage leads effectively with detailed information including company details and contact methods.",
     },
     {
       icon: BarChart3,
       title: "Analytics Dashboard",
-      description: "Get real-time insights into your sales performance and lead conversion metrics.",
+      description:
+        "Get real-time insights into your sales performance and lead conversion metrics.",
     },
     {
       icon: Zap,
       title: "Quick Actions",
-      description: "Streamline your workflow with quick actions for lead assignment and follow-ups.",
+      description:
+        "Streamline your workflow with quick actions for lead assignment and follow-ups.",
     },
     {
       icon: Shield,
       title: "Secure Access",
-      description: "Keep your data safe with secure authentication and role-based access controls.",
+      description:
+        "Keep your data safe with secure authentication and role-based access controls.",
     },
     {
       icon: Clock,
       title: "Real-time Updates",
-      description: "Stay updated with real-time notifications and activity tracking.",
+      description:
+        "Stay updated with real-time notifications and activity tracking.",
     },
   ];
 
@@ -65,7 +79,7 @@ export default function Index() {
                 Axisphere CRM
               </span>
             </Link>
-            
+
             <Link
               to="/admin"
               className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-medium"
@@ -85,7 +99,9 @@ export default function Index() {
             Modern CRM for Growing Teams
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Manage your sales team, track leads, and analyze performance with our powerful and intuitive CRM platform designed for modern businesses.
+            Manage your sales team, track leads, and analyze performance with
+            our powerful and intuitive CRM platform designed for modern
+            businesses.
           </p>
           <Link
             to="/admin"
@@ -150,7 +166,8 @@ export default function Index() {
             Ready to Transform Your Sales Process?
           </h2>
           <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-            Join hundreds of teams already using Axisphere CRM to manage their sales pipeline and grow their business.
+            Join hundreds of teams already using Axisphere CRM to manage their
+            sales pipeline and grow their business.
           </p>
           <Link
             to="/admin"

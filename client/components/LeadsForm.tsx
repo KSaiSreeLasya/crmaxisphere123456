@@ -40,7 +40,7 @@ export default function LeadsForm({
       keywords: [],
       links: [],
       actions: "",
-    }
+    },
   );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -244,7 +244,9 @@ export default function LeadsForm({
 
           {/* Contact Information */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Contact Information</h3>
+            <h3 className="font-semibold text-foreground">
+              Contact Information
+            </h3>
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
@@ -381,7 +383,7 @@ export default function LeadsForm({
                         setFormData({
                           ...formData,
                           industries: formData.industries.filter(
-                            (_, i) => i !== idx
+                            (_, i) => i !== idx,
                           ),
                         })
                       }
@@ -428,7 +430,7 @@ export default function LeadsForm({
                         setFormData({
                           ...formData,
                           keywords: formData.keywords.filter(
-                            (_, i) => i !== idx
+                            (_, i) => i !== idx,
                           ),
                         })
                       }

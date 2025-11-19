@@ -58,7 +58,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
               Axisphere CRM
             </span>
           </Link>
-          
+
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground hidden sm:block">
               {user?.first_name} {user?.last_name}
@@ -89,7 +89,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                       "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
                       isActive(item.href)
                         ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                     )}
                   >
                     <Icon className="w-5 h-5" />
@@ -115,7 +115,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
                       "flex-1 flex flex-col items-center justify-center py-3 px-2 transition-colors",
                       isActive(item.href)
                         ? "text-primary border-t-2 border-primary"
-                        : "text-muted-foreground"
+                        : "text-muted-foreground",
                     )}
                   >
                     <Icon className="w-5 h-5" />
@@ -131,7 +131,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
         <main
           className={cn(
             "flex-1 overflow-y-auto",
-            showSidebar && "pb-16 md:pb-0"
+            showSidebar && "pb-16 md:pb-0",
           )}
         >
           {children}

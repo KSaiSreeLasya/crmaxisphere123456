@@ -3,10 +3,30 @@ import { BarChart3, LineChart, PieChart, TrendingUp } from "lucide-react";
 
 export default function AnalyticsDashboard() {
   const analyticsMetrics = [
-    { label: "Total Revenue", value: "$325,000", icon: TrendingUp, color: "text-green-600" },
-    { label: "Avg Deal Value", value: "$15,625", icon: BarChart3, color: "text-blue-600" },
-    { label: "Win Rate", value: "32%", icon: PieChart, color: "text-purple-600" },
-    { label: "Avg Cycle Time", value: "45 days", icon: LineChart, color: "text-orange-600" },
+    {
+      label: "Total Revenue",
+      value: "$325,000",
+      icon: TrendingUp,
+      color: "text-green-600",
+    },
+    {
+      label: "Avg Deal Value",
+      value: "$15,625",
+      icon: BarChart3,
+      color: "text-blue-600",
+    },
+    {
+      label: "Win Rate",
+      value: "32%",
+      icon: PieChart,
+      color: "text-purple-600",
+    },
+    {
+      label: "Avg Cycle Time",
+      value: "45 days",
+      icon: LineChart,
+      color: "text-orange-600",
+    },
   ];
 
   const funnelData = [
@@ -73,7 +93,9 @@ export default function AnalyticsDashboard() {
             {funnelData.map((item, idx) => (
               <div key={idx}>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium text-foreground">{item.stage}</span>
+                  <span className="font-medium text-foreground">
+                    {item.stage}
+                  </span>
                   <span className="text-sm text-muted-foreground">
                     {item.count} leads ({item.percentage}%)
                   </span>
@@ -117,7 +139,10 @@ export default function AnalyticsDashboard() {
               </thead>
               <tbody>
                 {conversionByIndustry.map((item, idx) => (
-                  <tr key={idx} className="border-b border-border hover:bg-secondary">
+                  <tr
+                    key={idx}
+                    className="border-b border-border hover:bg-secondary"
+                  >
                     <td className="py-4 px-4 text-foreground font-medium">
                       {item.industry}
                     </td>

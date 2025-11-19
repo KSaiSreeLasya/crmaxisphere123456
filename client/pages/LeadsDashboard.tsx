@@ -2,7 +2,15 @@ import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
-import { Plus, TrendingUp, Clock, CheckCircle, AlertCircle, Edit, Trash2 } from "lucide-react";
+import {
+  Plus,
+  TrendingUp,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Edit,
+  Trash2,
+} from "lucide-react";
 import LeadsForm from "@/components/LeadsForm";
 
 interface LeadStatus {
@@ -168,7 +176,9 @@ export default function LeadsDashboard() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Leads Dashboard</h1>
+            <h1 className="text-3xl font-bold text-foreground">
+              Leads Dashboard
+            </h1>
             <p className="text-muted-foreground mt-2">
               View all leads grouped by status
             </p>
@@ -213,7 +223,9 @@ export default function LeadsDashboard() {
                   <h2 className="text-lg font-semibold text-foreground">
                     {status.name}
                   </h2>
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(status.color)}`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(status.color)}`}
+                  >
                     {statusLeads.length}
                   </span>
                 </div>
@@ -234,17 +246,20 @@ export default function LeadsDashboard() {
                       <div className="space-y-2 text-sm mb-4">
                         {lead.job_title && (
                           <p className="text-foreground">
-                            <span className="font-medium">Title:</span> {lead.job_title}
+                            <span className="font-medium">Title:</span>{" "}
+                            {lead.job_title}
                           </p>
                         )}
                         {lead.email && (
                           <p className="text-foreground">
-                            <span className="font-medium">Email:</span> {lead.email}
+                            <span className="font-medium">Email:</span>{" "}
+                            {lead.email}
                           </p>
                         )}
                         {lead.phone && (
                           <p className="text-foreground">
-                            <span className="font-medium">Phone:</span> {lead.phone}
+                            <span className="font-medium">Phone:</span>{" "}
+                            {lead.phone}
                           </p>
                         )}
                       </div>

@@ -3,10 +3,30 @@ import { Users, Target, TrendingUp, Award } from "lucide-react";
 
 export default function SalesDashboard() {
   const salesStats = [
-    { label: "Total Sales Persons", value: 12, icon: Users, color: "text-blue-600" },
-    { label: "Active Sales", value: 48, icon: Target, color: "text-orange-600" },
-    { label: "This Month Revenue", value: "$125K", icon: TrendingUp, color: "text-green-600" },
-    { label: "Top Performer", value: "Emma Williams", icon: Award, color: "text-purple-600" },
+    {
+      label: "Total Sales Persons",
+      value: 12,
+      icon: Users,
+      color: "text-blue-600",
+    },
+    {
+      label: "Active Sales",
+      value: 48,
+      icon: Target,
+      color: "text-orange-600",
+    },
+    {
+      label: "This Month Revenue",
+      value: "$125K",
+      icon: TrendingUp,
+      color: "text-green-600",
+    },
+    {
+      label: "Top Performer",
+      value: "Emma Williams",
+      icon: Award,
+      color: "text-purple-600",
+    },
   ];
 
   const salesPersonsPerformance = [
@@ -57,7 +77,9 @@ export default function SalesDashboard() {
       <div className="p-6 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Sales Dashboard</h1>
+          <h1 className="text-3xl font-bold text-foreground">
+            Sales Dashboard
+          </h1>
           <p className="text-muted-foreground mt-2">
             Monitor sales team performance and metrics
           </p>
@@ -117,11 +139,16 @@ export default function SalesDashboard() {
               </thead>
               <tbody>
                 {salesPersonsPerformance.map((person) => (
-                  <tr key={person.id} className="border-b border-border hover:bg-secondary">
+                  <tr
+                    key={person.id}
+                    className="border-b border-border hover:bg-secondary"
+                  >
                     <td className="py-4 px-4 text-foreground font-medium">
                       {person.name}
                     </td>
-                    <td className="py-4 px-4 text-foreground">{person.leads}</td>
+                    <td className="py-4 px-4 text-foreground">
+                      {person.leads}
+                    </td>
                     <td className="py-4 px-4">
                       <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
                         {person.converted}

@@ -139,10 +139,14 @@ export default function Register() {
               disabled={loading}
               className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-medium disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              {loading ? "Creating account..." : <>
-                <UserPlus className="w-5 h-5" />
-                Create Account
-              </>}
+              {loading ? (
+                "Creating account..."
+              ) : (
+                <>
+                  <UserPlus className="w-5 h-5" />
+                  Create Account
+                </>
+              )}
             </button>
           </form>
 

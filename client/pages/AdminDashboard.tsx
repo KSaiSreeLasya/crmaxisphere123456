@@ -34,11 +34,13 @@ interface LeadStatus {
 export default function AdminDashboard() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<"overview" | "sales" | "leads">(
-    "overview"
+    "overview",
   );
   const [showSalesPersonForm, setShowSalesPersonForm] = useState(false);
   const [showLeadsForm, setShowLeadsForm] = useState(false);
-  const [editingSalesPerson, setEditingSalesPerson] = useState<SalesPerson | undefined>();
+  const [editingSalesPerson, setEditingSalesPerson] = useState<
+    SalesPerson | undefined
+  >();
   const [salesPersons, setSalesPersons] = useState<SalesPerson[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
@@ -189,9 +191,7 @@ export default function AdminDashboard() {
     {
       label: "Converted",
       value: leads.filter((l) =>
-        statuses.find(
-          (s) => s.id === l.status_id && s.name === "Result"
-        )
+        statuses.find((s) => s.id === l.status_id && s.name === "Result"),
       ).length,
       icon: BarChart3,
       color: "text-green-600",
@@ -213,7 +213,9 @@ export default function AdminDashboard() {
       <div className="p-6 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold text-foreground">
+            Admin Dashboard
+          </h1>
           <p className="text-muted-foreground mt-2">
             Manage your sales team and leads
           </p>
@@ -312,7 +314,8 @@ export default function AdminDashboard() {
                     <p>📧 {person.email}</p>
                     <p>📱 {person.phone}</p>
                     <p className="text-primary font-medium">
-                      {leads.filter((l) => l.assigned_to === person.id).length} leads assigned
+                      {leads.filter((l) => l.assigned_to === person.id).length}{" "}
+                      leads assigned
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -379,9 +382,14 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody>
                   {leads.map((lead) => {
-                    const status = statuses.find((s) => s.id === lead.status_id);
+                    const status = statuses.find(
+                      (s) => s.id === lead.status_id,
+                    );
                     return (
-                      <tr key={lead.id} className="border-b border-border hover:bg-secondary">
+                      <tr
+                        key={lead.id}
+                        className="border-b border-border hover:bg-secondary"
+                      >
                         <td className="py-4 px-4 text-foreground font-medium">
                           {lead.name}
                         </td>
@@ -394,7 +402,7 @@ export default function AdminDashboard() {
                         <td className="py-4 px-4">
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                              lead.status_id
+                              lead.status_id,
                             )}`}
                           >
                             {status?.name || "Unknown"}
@@ -433,13 +441,16 @@ export default function AdminDashboard() {
                     className="flex items-center justify-between py-2 border-b border-border last:border-b-0"
                   >
                     <div>
-                      <p className="font-medium text-foreground">{person.name}</p>
+                      <p className="font-medium text-foreground">
+                        {person.name}
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         {person.email}
                       </p>
                     </div>
                     <span className="text-sm font-medium text-primary">
-                      {leads.filter((l) => l.assigned_to === person.id).length} leads
+                      {leads.filter((l) => l.assigned_to === person.id).length}{" "}
+                      leads
                     </span>
                   </div>
                 ))}
@@ -460,14 +471,16 @@ export default function AdminDashboard() {
                       className="flex items-center justify-between py-2 border-b border-border last:border-b-0"
                     >
                       <div>
-                        <p className="font-medium text-foreground">{lead.name}</p>
+                        <p className="font-medium text-foreground">
+                          {lead.name}
+                        </p>
                         <p className="text-sm text-muted-foreground">
                           {lead.company}
                         </p>
                       </div>
                       <span
                         className={`text-xs font-semibold px-2 py-1 rounded ${getStatusColor(
-                          lead.status_id
+                          lead.status_id,
                         )}`}
                       >
                         {status?.name || "Unknown"}
