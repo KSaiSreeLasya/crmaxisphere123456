@@ -140,7 +140,8 @@ export default function SelectPackage() {
               Choose Your AI Marketing Package
             </h1>
             <p className="text-gray-600 text-lg">
-              Scalable, results-driven solutions designed to grow with your business.
+              Scalable, results-driven solutions designed to grow with your
+              business.
             </p>
           </div>
 

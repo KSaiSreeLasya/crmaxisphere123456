@@ -57,7 +57,9 @@ export const handleSeed: RequestHandler = async (req, res) => {
       });
     } catch (rpcError) {
       // RPC might not exist, so we'll skip it and let manual SQL migration happen
-      console.warn("Could not execute table creation via RPC. Please run SQL migration manually.");
+      console.warn(
+        "Could not execute table creation via RPC. Please run SQL migration manually.",
+      );
     }
 
     // Check if admin user already exists

@@ -94,7 +94,8 @@ export const handleEnsurePackages: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Ensure packages error:", error);
     res.status(500).json({
-      error: error instanceof Error ? error.message : "Failed to ensure packages",
+      error:
+        error instanceof Error ? error.message : "Failed to ensure packages",
     });
   }
 };

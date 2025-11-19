@@ -33,7 +33,7 @@ export default function CreateInvoice() {
 
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedFeatures, setSelectedFeatures] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -173,9 +173,7 @@ export default function CreateInvoice() {
       toast({
         title: "Error",
         description:
-          error instanceof Error
-            ? error.message
-            : "Failed to create invoice",
+          error instanceof Error ? error.message : "Failed to create invoice",
         variant: "destructive",
       });
     } finally {
@@ -184,7 +182,7 @@ export default function CreateInvoice() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -251,7 +249,8 @@ export default function CreateInvoice() {
               Create Invoice
             </h1>
             <p className="text-gray-600">
-              Package: <span className="font-semibold">{selectedPackage.name}</span>
+              Package:{" "}
+              <span className="font-semibold">{selectedPackage.name}</span>
             </p>
           </div>
 
@@ -348,11 +347,13 @@ export default function CreateInvoice() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (selectedFeatures.size === selectedPackage.features.length) {
+                    if (
+                      selectedFeatures.size === selectedPackage.features.length
+                    ) {
                       setSelectedFeatures(new Set());
                     } else {
                       setSelectedFeatures(
-                        new Set(selectedPackage.features.map((_, i) => i))
+                        new Set(selectedPackage.features.map((_, i) => i)),
                       );
                     }
                   }}
@@ -365,7 +366,8 @@ export default function CreateInvoice() {
               </div>
 
               <p className="text-sm text-gray-600 mb-6">
-                Select features from {selectedPackage.name} to include in this invoice
+                Select features from {selectedPackage.name} to include in this
+                invoice
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -431,7 +433,8 @@ export default function CreateInvoice() {
                     GST Amount ({formData.gstPercentage}%)
                   </span>
                   <span className="font-medium text-gray-900">
-                    ₹{gstAmount.toLocaleString("en-IN", {
+                    ₹
+                    {gstAmount.toLocaleString("en-IN", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -443,7 +446,8 @@ export default function CreateInvoice() {
                     Total Amount Due
                   </span>
                   <span className="text-2xl font-bold text-purple-600">
-                    ₹{totalAmount.toLocaleString("en-IN", {
+                    ₹
+                    {totalAmount.toLocaleString("en-IN", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
