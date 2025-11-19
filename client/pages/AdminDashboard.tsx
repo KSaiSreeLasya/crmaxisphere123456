@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import SalesPersonForm from "@/components/SalesPersonForm";
-import LeadsForm from "@/components/LeadsForm";
 import { Edit, Trash2, Plus, BarChart3, Users, TrendingUp } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
@@ -32,12 +31,11 @@ interface LeadStatus {
 }
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<"overview" | "sales" | "leads">(
     "overview",
   );
-  const [showSalesPersonForm, setShowSalesPersonForm] = useState(false);
-  const [showLeadsForm, setShowLeadsForm] = useState(false);
   const [editingSalesPerson, setEditingSalesPerson] = useState<
     SalesPerson | undefined
   >();
@@ -77,76 +75,12 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleAddSalesPerson = async (data: any) => {
-    try {
-      // Create user account first
-      const userResult = await supabase.from("users").insert({
-        email: data.email,
-        password_hash: data.password,
-        first_name: data.name.split(" ")[0],
-        last_name: data.name.split(" ").slice(1).join(" ") || "",
-        role: "sales",
-        is_active: true,
-      });
-
-      if (userResult.error) throw userResult.error;
-
-      // Get the created user
-      const { data: createdUser } = await supabase
-        .from("users")
-        .select("id")
-        .eq("email", data.email)
-        .single();
-
-      // Create sales person
-      await supabase.from("sales_persons").insert({
-        user_id: createdUser?.id,
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        status: "active",
-        created_by: user?.id,
-      });
-
-      setShowSalesPersonForm(false);
-      fetchData();
-    } catch (error) {
-      console.error("Error adding sales person:", error);
-    }
-  };
-
   const handleDeleteSalesPerson = async (id: string) => {
     try {
       await supabase.from("sales_persons").delete().eq("id", id);
       fetchData();
     } catch (error) {
       console.error("Error deleting sales person:", error);
-    }
-  };
-
-  const handleAddLead = async (data: any) => {
-    try {
-      const noStageStatus = statuses.find((s) => s.name === "No Stage");
-      if (!noStageStatus) return;
-
-      await supabase.from("leads").insert({
-        name: data.name,
-        company: data.company,
-        job_title: data.jobTitle,
-        location: data.location,
-        company_size: data.companySize,
-        industries: data.industries,
-        keywords: data.keywords,
-        links: data.links,
-        notes: data.actions,
-        status_id: noStageStatus.id,
-        created_by: user?.id,
-      });
-
-      setShowLeadsForm(false);
-      fetchData();
-    } catch (error) {
-      console.error("Error adding lead:", error);
     }
   };
 
@@ -290,10 +224,7 @@ export default function AdminDashboard() {
                 Sales Persons
               </h2>
               <button
-                onClick={() => {
-                  setEditingSalesPerson(undefined);
-                  setShowSalesPersonForm(true);
-                }}
+                onClick={() => navigate("/admin/sales-persons/add")}
                 className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-medium"
               >
                 <Plus className="w-5 h-5" />
@@ -320,11 +251,9 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => {
-                        setEditingSalesPerson(person);
-                        setShowSalesPersonForm(true);
-                      }}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-input text-foreground rounded-lg hover:bg-secondary transition-colors"
+                      disabled
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-input text-foreground rounded-lg hover:bg-secondary transition-colors opacity-50 cursor-not-allowed"
+                      title="Edit functionality coming soon"
                     >
                       <Edit className="w-4 h-4" />
                       Edit
@@ -349,9 +278,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-foreground">Leads</h2>
               <button
-                onClick={() => {
-                  setShowLeadsForm(true);
-                }}
+                onClick={() => navigate("/leads/add")}
                 className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-medium"
               >
                 <Plus className="w-5 h-5" />
@@ -493,27 +420,6 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
-
-      {/* Forms */}
-      {showSalesPersonForm && (
-        <SalesPersonForm
-          initialData={editingSalesPerson}
-          onSubmit={handleAddSalesPerson}
-          onClose={() => {
-            setShowSalesPersonForm(false);
-            setEditingSalesPerson(undefined);
-          }}
-        />
-      )}
-
-      {showLeadsForm && (
-        <LeadsForm
-          onSubmit={handleAddLead}
-          onClose={() => {
-            setShowLeadsForm(false);
-          }}
-        />
-      )}
     </Layout>
   );
 }

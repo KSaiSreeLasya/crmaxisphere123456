@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
@@ -11,7 +12,6 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
-import LeadsForm from "@/components/LeadsForm";
 
 interface LeadStatus {
   id: string;
@@ -39,12 +39,12 @@ interface LeadsByStatus {
 }
 
 export default function LeadsDashboard() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [leadsByStatus, setLeadsByStatus] = useState<LeadsByStatus>({});
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetchStatuses();
@@ -99,58 +99,6 @@ export default function LeadsDashboard() {
     }
   };
 
-  const handleAddLead = async (data: any) => {
-    try {
-      const statusId =
-        data.statusId || statuses.find((s) => s.name === "No Stage")?.id;
-      if (!statusId) return;
-
-      await supabase.from("leads").insert({
-        name: data.name,
-        company: data.company,
-        job_title: data.jobTitle,
-        location: data.location,
-        company_size: data.companySize,
-        industries: data.industries,
-        keywords: data.keywords,
-        links: data.links,
-        notes: data.note || data.actions,
-        next_reminder: data.nextReminder || null,
-        status_id: statusId,
-        created_by: user?.id,
-      });
-
-      // Add emails
-      const lastLeadResponse = await supabase
-        .from("leads")
-        .select("id")
-        .eq("created_by", user?.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .single();
-
-      if (lastLeadResponse.data?.id) {
-        for (const email of data.emails) {
-          await supabase.from("lead_emails").insert({
-            lead_id: lastLeadResponse.data.id,
-            email,
-          });
-        }
-        for (const phone of data.phones) {
-          await supabase.from("lead_phones").insert({
-            lead_id: lastLeadResponse.data.id,
-            phone,
-          });
-        }
-      }
-
-      setShowForm(false);
-      fetchLeads();
-    } catch (error) {
-      console.error("Error adding lead:", error);
-    }
-  };
-
   const getStatusColor = (color: string) => {
     const colorMap: Record<string, string> = {
       gray: "bg-gray-100 text-gray-800",
@@ -188,7 +136,7 @@ export default function LeadsDashboard() {
             </p>
           </div>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => navigate("/leads/add")}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium"
           >
             <Plus className="w-5 h-5" />
@@ -310,7 +258,7 @@ export default function LeadsDashboard() {
             <TrendingUp className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
             <p className="text-muted-foreground mb-4">No leads yet</p>
             <button
-              onClick={() => setShowForm(true)}
+              onClick={() => navigate("/leads/add")}
               className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90"
             >
               <Plus className="w-5 h-5" />
@@ -319,13 +267,6 @@ export default function LeadsDashboard() {
           </div>
         )}
       </div>
-
-      {showForm && (
-        <LeadsForm
-          onSubmit={handleAddLead}
-          onClose={() => setShowForm(false)}
-        />
-      )}
     </Layout>
   );
 }
