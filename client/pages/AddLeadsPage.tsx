@@ -92,7 +92,8 @@ export default function AddLeadsPage() {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // Return true if no errors exist
+    return Object.keys(newErrors).every(key => !newErrors[key]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
