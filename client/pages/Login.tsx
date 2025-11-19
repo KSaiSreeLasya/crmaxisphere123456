@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { LogIn, AlertCircle } from "lucide-react";
 
@@ -99,27 +99,20 @@ export default function Login() {
           {/* Demo Credentials */}
           <div className="mt-6 pt-6 border-t border-border">
             <p className="text-sm text-muted-foreground mb-3 font-medium">
-              Demo Credentials:
+              Admin Credentials:
             </p>
             <div className="space-y-2 text-xs text-muted-foreground bg-secondary/50 p-3 rounded-lg">
               <p>
-                <strong>Admin:</strong> admin@example.com / password
+                <strong>Email:</strong> admin@axisphere.in
               </p>
               <p>
-                <strong>Sales:</strong> sales@example.com / password
+                <strong>Password:</strong> admin2024
+              </p>
+              <p className="mt-2 text-xs">
+                Sales persons can login with credentials created by admin.
               </p>
             </div>
           </div>
-
-          <p className="text-center text-sm text-muted-foreground mt-6">
-            Don't have an account?{" "}
-            <Link
-              to="/register"
-              className="text-primary hover:underline font-medium"
-            >
-              Sign up here
-            </Link>
-          </p>
         </div>
       </div>
     </div>
