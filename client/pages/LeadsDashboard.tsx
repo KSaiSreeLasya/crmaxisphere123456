@@ -136,7 +136,7 @@ export default function LeadsDashboard() {
             </p>
           </div>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => navigate("/leads/add")}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium"
           >
             <Plus className="w-5 h-5" />
