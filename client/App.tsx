@@ -19,6 +19,7 @@ import AddSalesPersonPage from "./pages/AddSalesPersonPage";
 import SalesDashboard from "./pages/SalesDashboard";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import InvoiceList from "./pages/InvoiceList";
+import SelectPackage from "./pages/SelectPackage";
 import CreateInvoice from "./pages/CreateInvoice";
 import InvoiceDetail from "./pages/InvoiceDetail";
 
@@ -140,6 +141,14 @@ const AppContent = () => {
         element={
           <ProtectedRoute>
             <InvoiceList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/invoices/select-package"
+        element={
+          <ProtectedRoute>
+            <SelectPackage />
           </ProtectedRoute>
         }
       />
