@@ -271,16 +271,15 @@ export default function AddLeadsPage() {
       return;
     }
 
-    const updatedPhones = [...formData.phones, trimmedPhone];
     setFormData({
       ...formData,
-      phones: updatedPhones,
+      phones: [...formData.phones, trimmedPhone],
     });
     setPhoneInput("");
-    // Clear contact error when successfully added
-    if (updatedPhones.length > 0) {
-      setErrors({});
-    }
+    setErrors((prev) => {
+      const { contact, ...rest } = prev;
+      return rest;
+    });
   };
 
   const addIndustry = () => {
