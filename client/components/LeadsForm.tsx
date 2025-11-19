@@ -18,6 +18,7 @@ interface Lead {
   statusId?: string;
   nextReminder?: string;
   note?: string;
+  assignedTo?: string;
 }
 
 interface LeadStatus {
@@ -25,6 +26,11 @@ interface LeadStatus {
   name: string;
   order_index: number;
   color: string;
+}
+
+interface SalesPerson {
+  id: string;
+  name: string;
 }
 
 interface LeadsFormProps {
