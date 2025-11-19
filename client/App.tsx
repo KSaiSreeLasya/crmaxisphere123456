@@ -135,6 +135,30 @@ const AppContent = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/admin/invoices"
+        element={
+          <ProtectedRoute>
+            <InvoiceList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/invoices/create"
+        element={
+          <ProtectedRoute>
+            <CreateInvoice />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/invoices/:id"
+        element={
+          <ProtectedRoute>
+            <InvoiceDetail />
+          </ProtectedRoute>
+        }
+      />
 
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
