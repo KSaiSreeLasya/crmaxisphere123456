@@ -108,7 +108,7 @@ export default function InvoiceList() {
             <div className="flex items-center justify-between mb-6">
               <h1 className="text-3xl font-bold text-gray-900">Invoices</h1>
               <button
-                onClick={() => navigate("/admin/invoices/create")}
+                onClick={() => navigate("/admin/invoices/select-package")}
                 className="flex items-center gap-2 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors font-medium"
               >
                 <Plus className="w-5 h-5" />
@@ -134,7 +134,7 @@ export default function InvoiceList() {
                   Create your first invoice to get started
                 </p>
                 <button
-                  onClick={() => navigate("/admin/invoices/create")}
+                  onClick={() => navigate("/admin/invoices/select-package")}
                   className="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors font-medium"
                 >
                   <Plus className="w-5 h-5" />
