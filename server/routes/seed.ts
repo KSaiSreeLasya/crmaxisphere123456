@@ -13,16 +13,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export const handleSeed: RequestHandler = async (req, res) => {
   try {
     // Check if admin user already exists
-    const { data: existingAdmin } = await supabase
+    const { data: existingAdmins, error: checkError } = await supabase
       .from("users")
       .select("id")
-      .eq("email", "admin@axisphere.in")
-      .single();
+      .eq("email", "admin@axisphere.in");
 
-    if (existingAdmin) {
+    if (!checkError && existingAdmins && existingAdmins.length > 0) {
       return res.json({
         message: "Admin user already exists",
-        admin: existingAdmin,
+        admin: existingAdmins[0],
       });
     }
 
