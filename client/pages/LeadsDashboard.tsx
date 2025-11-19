@@ -69,6 +69,18 @@ export default function LeadsDashboard() {
     }
   };
 
+  const fetchSalesPersons = async () => {
+    try {
+      const { data } = await supabase
+        .from("sales_persons")
+        .select("id, name")
+        .order("name");
+      if (data) setSalesPersons(data);
+    } catch (error) {
+      console.error("Error fetching sales persons:", error);
+    }
+  };
+
   const fetchLeads = async () => {
     try {
       const { data } = await supabase
@@ -79,15 +91,6 @@ export default function LeadsDashboard() {
 
       if (data) {
         setLeads(data);
-        // Group leads by status
-        const grouped: LeadsByStatus = {};
-        data.forEach((lead) => {
-          if (!grouped[lead.status_id]) {
-            grouped[lead.status_id] = [];
-          }
-          grouped[lead.status_id].push(lead);
-        });
-        setLeadsByStatus(grouped);
       }
     } catch (error) {
       console.error("Error fetching leads:", error);
