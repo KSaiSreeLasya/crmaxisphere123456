@@ -538,11 +538,6 @@ export default function AddLeadsPage() {
                     </div>
                   ))}
                 </div>
-                {errors.phones && (
-                  <p className="text-sm text-destructive mt-1">
-                    {errors.phones}
-                  </p>
-                )}
               </div>
             </div>
 
