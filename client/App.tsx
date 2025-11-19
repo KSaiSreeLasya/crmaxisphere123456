@@ -14,6 +14,8 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import LeadsDashboard from "./pages/LeadsDashboard";
+import AddLeadsPage from "./pages/AddLeadsPage";
+import AddSalesPersonPage from "./pages/AddSalesPersonPage";
 import SalesDashboard from "./pages/SalesDashboard";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 
