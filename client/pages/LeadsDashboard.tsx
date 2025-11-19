@@ -46,7 +46,7 @@ export default function LeadsDashboard() {
   const { user } = useAuth();
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [leadsByStatus, setLeadsByStatus] = useState<LeadsByStatus>({});
+  const [salesPersons, setSalesPersons] = useState<SalesPerson[]>([]);
   const [loading, setLoading] = useState(true);
   const [autoAssignLoading, setAutoAssignLoading] = useState(false);
   const { toast } = useToast();
@@ -54,6 +54,7 @@ export default function LeadsDashboard() {
   useEffect(() => {
     fetchStatuses();
     fetchLeads();
+    fetchSalesPersons();
   }, [user?.id]);
 
   const fetchStatuses = async () => {
