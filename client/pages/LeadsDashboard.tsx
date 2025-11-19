@@ -242,13 +242,23 @@ export default function LeadsDashboard() {
               View all leads grouped by status
             </p>
           </div>
-          <button
-            onClick={() => navigate("/leads/add")}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium"
-          >
-            <Plus className="w-5 h-5" />
-            Add Lead
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleAutoAssign}
+              disabled={autoAssignLoading}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+            >
+              <Users className="w-5 h-5" />
+              {autoAssignLoading ? "Assigning..." : "Auto Assign Leads"}
+            </button>
+            <button
+              onClick={() => navigate("/leads/add")}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium"
+            >
+              <Plus className="w-5 h-5" />
+              Add Lead
+            </button>
+          </div>
         </div>
 
         {/* Status Tabs */}
