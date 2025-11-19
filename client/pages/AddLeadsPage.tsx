@@ -143,7 +143,18 @@ export default function AddLeadsPage() {
         .select()
         .single();
 
-      if (leadError) throw leadError;
+      if (leadError) {
+        console.error("Lead creation error:", leadError);
+        const errorMsg =
+          leadError.message ||
+          JSON.stringify(leadError) ||
+          "Failed to create lead";
+        throw new Error(errorMsg);
+      }
+
+      if (!leadData?.id) {
+        throw new Error("Lead was created but no ID was returned");
+      }
 
       // Add emails
       for (const email of formData.emails) {
@@ -153,7 +164,9 @@ export default function AddLeadsPage() {
             lead_id: leadData.id,
             email,
           });
-        if (emailError) console.error("Error adding email:", emailError);
+        if (emailError) {
+          console.error("Error adding email:", emailError);
+        }
       }
 
       // Add phones
@@ -164,17 +177,33 @@ export default function AddLeadsPage() {
             lead_id: leadData.id,
             phone,
           });
-        if (phoneError) console.error("Error adding phone:", phoneError);
+        if (phoneError) {
+          console.error("Error adding phone:", phoneError);
+        }
       }
 
       navigate("/leads");
     } catch (error) {
-      console.error("Error adding lead:", error);
+      let errorMessage = "Failed to add lead. Please try again.";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === "object" && error !== null) {
+        const err = error as any;
+        if (err.message) {
+          errorMessage = err.message;
+        } else if (err.error_description) {
+          errorMessage = err.error_description;
+        } else if (err.hint) {
+          errorMessage = err.hint;
+        } else {
+          errorMessage = JSON.stringify(err);
+        }
+      }
+
+      console.error("Full error object:", error);
       setErrors({
-        submit:
-          error instanceof Error
-            ? error.message
-            : "Failed to add lead. Please try again.",
+        submit: errorMessage,
       });
     } finally {
       setLoading(false);
