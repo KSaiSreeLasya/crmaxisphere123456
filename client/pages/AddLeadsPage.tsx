@@ -249,8 +249,12 @@ export default function AddLeadsPage() {
       emails: [...formData.emails, trimmedEmail],
     });
     setEmailInput("");
-    // Clear email error when successfully added
-    setErrors((prev) => ({ ...prev, emails: "" }));
+    // Clear contact error when successfully added
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors.contact;
+      return newErrors;
+    });
   };
 
   const addPhone = () => {
