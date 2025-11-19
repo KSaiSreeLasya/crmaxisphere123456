@@ -277,8 +277,12 @@ export default function AddLeadsPage() {
       phones: [...formData.phones, trimmedPhone],
     });
     setPhoneInput("");
-    // Clear phone error when successfully added
-    setErrors((prev) => ({ ...prev, phones: "" }));
+    // Clear contact error when successfully added
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors.contact;
+      return newErrors;
+    });
   };
 
   const addIndustry = () => {
