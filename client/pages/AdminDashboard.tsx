@@ -9,9 +9,12 @@ import {
   Calendar,
   Mail,
   Phone,
+  FileText,
 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
 
 interface SalesPerson {
   id: string;
@@ -45,6 +48,7 @@ export default function AdminDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
     if (!user) {
@@ -106,8 +110,8 @@ export default function AdminDashboard() {
     <Layout showSidebar={true}>
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-7xl mx-auto">
-          {/* Welcome Banner */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-8 mb-8 text-white shadow-lg">
+                {/* Welcome Banner */}
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-8 mb-8 text-white shadow-lg">
             <h1 className="text-3xl font-bold mb-2">
               Welcome to Axisphere CRM
             </h1>
