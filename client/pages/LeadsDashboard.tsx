@@ -39,12 +39,12 @@ interface LeadsByStatus {
 }
 
 export default function LeadsDashboard() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [leadsByStatus, setLeadsByStatus] = useState<LeadsByStatus>({});
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetchStatuses();
