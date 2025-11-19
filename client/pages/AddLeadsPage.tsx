@@ -89,10 +89,16 @@ export default function AddLeadsPage() {
 
     if (formData.emails.length === 0) {
       newErrors.emails = "At least one email is required";
+    } else {
+      // Clear email error if valid
+      if (newErrors.emails) delete newErrors.emails;
     }
 
     if (formData.phones.length === 0) {
       newErrors.phones = "At least one phone number is required";
+    } else {
+      // Clear phone error if valid
+      if (newErrors.phones) delete newErrors.phones;
     }
 
     setErrors(newErrors);
