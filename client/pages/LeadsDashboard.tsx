@@ -258,7 +258,7 @@ export default function LeadsDashboard() {
             <TrendingUp className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
             <p className="text-muted-foreground mb-4">No leads yet</p>
             <button
-              onClick={() => setShowForm(true)}
+              onClick={() => navigate("/leads/add")}
               className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90"
             >
               <Plus className="w-5 h-5" />
