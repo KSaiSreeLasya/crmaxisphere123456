@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Users, TrendingUp, LineChart, BarChart3, LogOut } from "lucide-react";
+import { Users, TrendingUp, LineChart, BarChart3, LogOut, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 
@@ -30,6 +30,12 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
       label: "Leads",
       href: "/admin/leads",
       icon: TrendingUp,
+    },
+    {
+      label: "Invoices",
+      href: "/admin/invoices",
+      icon: FileText,
+      adminOnly: true,
     },
     {
       label: "Analytics",
