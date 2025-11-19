@@ -48,6 +48,8 @@ export default function LeadsDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [leadsByStatus, setLeadsByStatus] = useState<LeadsByStatus>({});
   const [loading, setLoading] = useState(true);
+  const [autoAssignLoading, setAutoAssignLoading] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchStatuses();
