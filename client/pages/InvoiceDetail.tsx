@@ -17,6 +17,7 @@ interface Invoice {
   gst_amount: number;
   total_amount: number;
   additional_notes: string;
+  selected_features?: string[];
   created_at: string;
   created_by: string;
   packages?: {
