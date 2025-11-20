@@ -556,188 +556,266 @@ export default function InvoiceDetail() {
 
           {/* Invoice Content */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-12">
-              {/* Header Section */}
-              <div className="flex justify-between items-start mb-12 pb-8 border-b-2 border-gray-200">
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                    Axisphere
-                  </h1>
-                  <p className="text-gray-600">Axisphere Sales CRM</p>
-                  <p className="text-gray-600">Invoice Bill</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-semibold text-gray-900 mb-2">
-                    Invoice Number: {invoice.invoice_number}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <strong>Invoice Date:</strong>{" "}
-                    {formatDate(invoice.created_at)}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <strong>Due Date:</strong>{" "}
-                    {formatDate(dueDate.toISOString())}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <strong>Payment Terms:</strong> Due within 30 days
-                  </p>
-                </div>
-              </div>
-
-              {/* Bill To Section */}
-              <div className="mb-12">
-                <h3 className="text-xs font-bold text-gray-900 uppercase mb-4 pb-2 border-b border-gray-200">
-                  BILL TO
-                </h3>
-                <div className="grid grid-cols-3 gap-8">
-                  <div>
-                    <h4 className="text-xs text-gray-500 uppercase font-semibold mb-2">
-                      Name
-                    </h4>
-                    <p className="text-gray-900">{invoice.customer_name}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-xs text-gray-500 uppercase font-semibold mb-2">
-                      Email
-                    </h4>
-                    <p className="text-gray-900">
-                      {invoice.customer_email || "N/A"}
+            {/* Page 1: Invoice Details */}
+            {currentPage === 1 && (
+              <div className="p-12">
+                {/* Header Section */}
+                <div className="flex items-start gap-6 mb-8 pb-6 border-b border-gray-300">
+                  <img
+                    src={LOGO_URL}
+                    alt="Axisphere Logo"
+                    className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <h1 className="text-4xl font-bold text-gray-900">
+                      Axisphere
+                    </h1>
+                    <p className="text-sm font-medium text-gray-700 mt-2">
+                      {COMPANY_NAME}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">Invoice Bill</p>
+                    <p className="text-xs text-gray-600 mt-3 max-w-sm leading-relaxed">
+                      {COMPANY_ADDRESS}
                     </p>
                   </div>
-                  <div>
-                    <h4 className="text-xs text-gray-500 uppercase font-semibold mb-2">
-                      Phone
-                    </h4>
-                    <p className="text-gray-900">
-                      {invoice.customer_phone || "N/A"}
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-gray-900 mb-3">
+                      Invoice Number: {invoice.invoice_number}
+                    </p>
+                    <p className="text-xs text-gray-600 mb-2">
+                      <strong>Date:</strong>{" "}
+                      {formatDate(invoice.created_at)}
+                    </p>
+                    <p className="text-xs text-gray-600 mb-2">
+                      <strong>Due Date:</strong>{" "}
+                      {formatDate(dueDate.toISOString())}
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      <strong>Payment Terms:</strong> Due within 30 days
                     </p>
                   </div>
                 </div>
-              </div>
 
-              {/* Package Details */}
-              <div className="mb-12">
-                <h3 className="text-xs font-bold text-gray-900 uppercase mb-4 pb-2 border-b border-gray-200">
-                  Description
-                </h3>
-                <table className="w-full mb-6">
-                  <thead>
-                    <tr className="border-b-2 border-gray-300">
-                      <th className="text-left px-4 py-3 font-semibold text-gray-900">
-                        Description
-                      </th>
-                      <th className="text-right px-4 py-3 font-semibold text-gray-900">
-                        Qty
-                      </th>
-                      <th className="text-right px-4 py-3 font-semibold text-gray-900">
-                        Rate
-                      </th>
-                      <th className="text-right px-4 py-3 font-semibold text-gray-900">
-                        Amount
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-gray-200">
-                      <td className="px-4 py-3 text-gray-900">
-                        {invoice.packages?.name || "Package"} - Full Package
-                      </td>
-                      <td className="text-right px-4 py-3 text-gray-900">1</td>
-                      <td className="text-right px-4 py-3 text-gray-900">
-                        ₹{invoice.base_price.toLocaleString("en-IN")}
-                      </td>
-                      <td className="text-right px-4 py-3 text-gray-900">
-                        ���{invoice.base_price.toLocaleString("en-IN")}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Features */}
-              {invoice.packages && invoice.packages.features.length > 0 && (
-                <div className="mb-12">
+                {/* Bill To Section */}
+                <div className="mb-8">
                   <h3 className="text-xs font-bold text-gray-900 uppercase mb-4 pb-2 border-b border-gray-200">
+                    BILL TO
+                  </h3>
+                  <div className="grid grid-cols-3 gap-8">
+                    <div>
+                      <h4 className="text-xs text-gray-500 uppercase font-semibold mb-2">
+                        Name
+                      </h4>
+                      <p className="text-gray-900 text-sm">
+                        {invoice.customer_name}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-xs text-gray-500 uppercase font-semibold mb-2">
+                        Email
+                      </h4>
+                      <p className="text-gray-900 text-sm">
+                        {invoice.customer_email || "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-xs text-gray-500 uppercase font-semibold mb-2">
+                        Phone
+                      </h4>
+                      <p className="text-gray-900 text-sm">
+                        {invoice.customer_phone || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-gray-300 my-8"></div>
+
+                {/* Package Details */}
+                <div className="mb-8">
+                  <h3 className="text-xs font-bold text-gray-900 uppercase mb-4 pb-2 border-b border-gray-200">
+                    Description
+                  </h3>
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b-2 border-gray-300">
+                        <th className="text-left px-4 py-3 font-semibold text-gray-900 text-sm">
+                          Description
+                        </th>
+                        <th className="text-center px-4 py-3 font-semibold text-gray-900 text-sm">
+                          Qty
+                        </th>
+                        <th className="text-right px-4 py-3 font-semibold text-gray-900 text-sm">
+                          Rate
+                        </th>
+                        <th className="text-right px-4 py-3 font-semibold text-gray-900 text-sm">
+                          Amount
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-200">
+                        <td className="px-4 py-3 text-gray-900 text-sm">
+                          {invoice.packages?.name || "Package"} - Full Package
+                        </td>
+                        <td className="text-center px-4 py-3 text-gray-900 text-sm">
+                          1
+                        </td>
+                        <td className="text-right px-4 py-3 text-gray-900 text-sm">
+                          ₹{invoice.base_price.toLocaleString("en-IN")}
+                        </td>
+                        <td className="text-right px-4 py-3 text-gray-900 text-sm">
+                          ₹{invoice.base_price.toLocaleString("en-IN")}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pricing Section */}
+                <div className="mb-8">
+                  <div className="space-y-2">
+                    <div className="flex justify-end gap-8">
+                      <span className="text-gray-700 text-sm">Subtotal:</span>
+                      <span className="text-gray-900 font-semibold text-sm w-32 text-right">
+                        ₹
+                        {invoice.base_price.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                    <div className="flex justify-end gap-8 pb-3 border-b border-gray-200">
+                      <span className="text-gray-700 text-sm">
+                        Tax ({invoice.gst_percentage}% GST):
+                      </span>
+                      <span className="text-gray-900 font-semibold text-sm w-32 text-right">
+                        ₹
+                        {invoice.gst_amount.toLocaleString("en-IN", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
+                    </div>
+                    <div className="flex justify-end gap-8 pt-3 bg-purple-100 -mx-12 px-12 py-4">
+                      <span className="text-gray-900 font-bold text-lg">
+                        Total Amount Due
+                      </span>
+                      <span className="text-purple-600 font-bold text-lg w-32 text-right">
+                        ₹
+                        {invoice.total_amount.toLocaleString("en-IN", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Notes */}
+                {invoice.additional_notes && (
+                  <div className="mb-8">
+                    <h3 className="text-xs font-bold text-gray-900 uppercase mb-4 pb-2 border-b border-gray-200">
+                      Additional Notes
+                    </h3>
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      {invoice.additional_notes}
+                    </p>
+                  </div>
+                )}
+
+                {/* Footer */}
+                <div className="text-center pt-8 border-t border-gray-200 text-xs text-gray-600">
+                  <p>
+                    Thank you for your business! For inquiries, contact
+                    hello@ai-marketing.studio
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Page 2: Features */}
+            {currentPage === 2 && hasFeatures && (
+              <div className="p-12">
+                {/* Header Section */}
+                <div className="flex items-start gap-6 mb-8 pb-6 border-b border-gray-300">
+                  <img
+                    src={LOGO_URL}
+                    alt="Axisphere Logo"
+                    className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <h1 className="text-4xl font-bold text-gray-900">
+                      Axisphere
+                    </h1>
+                    <p className="text-sm font-medium text-gray-700 mt-2">
+                      {COMPANY_NAME}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">Invoice Bill</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-gray-600">
+                      <strong>Invoice Number:</strong> {invoice.invoice_number}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Features Section */}
+                <div className="mb-12">
+                  <h3 className="text-xs font-bold text-gray-900 uppercase mb-6 pb-2 border-b border-gray-200">
                     Package Scope & Features
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     {(invoice.selected_features &&
                     invoice.selected_features.length > 0
                       ? invoice.selected_features
-                      : invoice.packages.features
+                      : invoice.packages?.features || []
                     ).map((feature, index) => (
                       <div
                         key={index}
-                        className="flex items-start gap-3 p-3 bg-green-50 rounded-lg"
+                        className="flex items-start gap-3 p-4 bg-green-50 rounded-lg"
                       >
-                        <span className="text-green-600 font-bold mt-1">✓</span>
-                        <span className="text-gray-700">{feature}</span>
+                        <span className="text-green-600 font-bold flex-shrink-0">
+                          ✓
+                        </span>
+                        <span className="text-gray-700 text-sm">{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-              )}
 
-              {/* Pricing Section */}
-              <div className="mb-12">
-                <h3 className="text-xs font-bold text-gray-900 uppercase mb-4 pb-2 border-b border-gray-200">
-                  Pricing & Payment
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-                    <span className="text-gray-700">Subtotal</span>
-                    <span className="font-semibold text-gray-900">
-                      ₹{invoice.base_price.toLocaleString("en-IN")}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-                    <span className="text-gray-700">
-                      Tax ({invoice.gst_percentage}% GST)
-                    </span>
-                    <span className="font-semibold text-gray-900">
-                      ₹
-                      {invoice.gst_amount.toLocaleString("en-IN", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center p-4 bg-purple-50 border-2 border-purple-200 rounded-lg">
-                    <span className="font-bold text-gray-900">
-                      Total Amount Due
-                    </span>
-                    <span className="text-2xl font-bold text-purple-600">
-                      ₹
-                      {invoice.total_amount.toLocaleString("en-IN", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Additional Notes */}
-              {invoice.additional_notes && (
-                <div className="mb-12">
-                  <h3 className="text-xs font-bold text-gray-900 uppercase mb-4 pb-2 border-b border-gray-200">
-                    Additional Notes
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {invoice.additional_notes}
+                {/* Footer */}
+                <div className="text-center pt-8 border-t border-gray-200 text-xs text-gray-600">
+                  <p>
+                    Thank you for your business! For inquiries, contact
+                    hello@ai-marketing.studio
                   </p>
                 </div>
-              )}
-
-              {/* Footer */}
-              <div className="text-center pt-8 border-t border-gray-200 text-sm text-gray-600">
-                <p>
-                  Thank you for your business! For inquiries, contact
-                  hello@axisphere.in
-                </p>
-                <p className="mt-2">© 2025 Axisphere. All rights reserved.</p>
               </div>
-            </div>
+            )}
+
+            {/* Page Navigation */}
+            {hasFeatures && (
+              <div className="border-t border-gray-200 px-12 py-4 flex items-center justify-between">
+                <button
+                  onClick={() => setCurrentPage(1)}
+                  disabled={currentPage === 1}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </button>
+                <span className="text-sm text-gray-600">
+                  Page {currentPage} of 2
+                </span>
+                <button
+                  onClick={() => setCurrentPage(2)}
+                  disabled={currentPage === 2}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
