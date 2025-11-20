@@ -33,7 +33,7 @@ const COMPANY_NAME = "Axisphere Media Worx LLP";
 const COMPANY_ADDRESS =
   "Plot no.102, 103, Temple Lane, Mythri Nagar, Mathrusri Nagar, Madinaguda, Serilingampally, K.V.Rangareddy-500049, Telangana, India";
 const LOGO_URL =
-  "https://cdn.builder.io/api/v1/image/assets%2F2f195b82614d46a0b777d649ad418b24%2Ff494acc3eaed47fcb9e92036f1e95ccf?format=webp&width=100";
+  "https://cdn.builder.io/api/v1/image/assets%2F2f195b82614d46a0b777d649ad418b24%2Fdb52c08441eb4930b2e01a7176f2e33b?format=webp&width=800";
 
 export default function InvoiceDetail() {
   const { id } = useParams<{ id: string }>();
