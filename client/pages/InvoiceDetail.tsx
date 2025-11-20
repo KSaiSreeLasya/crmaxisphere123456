@@ -477,8 +477,7 @@ export default function InvoiceDetail() {
 
             <!-- Footer -->
             <div class="footer">
-              <p>Thank you for your business! For inquiries, contact hello@axisphere.in</p>
-              <p style="margin-top: 5px;">© 2025 Axisphere. All rights reserved.</p>
+              <p>Thank you for your business! For inquiries, contact hello@ai-marketing.studio</p>
             </div>
           </div>
 
@@ -529,8 +528,7 @@ export default function InvoiceDetail() {
 
             <!-- Footer -->
             <div class="footer">
-              <p>Thank you for your business! For inquiries, contact hello@axisphere.in</p>
-              <p style="margin-top: 5px;">© 2025 Axisphere. All rights reserved.</p>
+              <p>Thank you for your business! For inquiries, contact hello@ai-marketing.studio</p>
             </div>
           </div>
           `
