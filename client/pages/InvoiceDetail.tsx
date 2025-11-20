@@ -296,28 +296,31 @@ export default function InvoiceDetail() {
             .features-grid {
               display: grid;
               grid-template-columns: 1fr 1fr;
-              gap: 10px;
+              gap: 16px;
               font-size: 11px;
             }
             .feature-item {
               display: flex;
               align-items: flex-start;
-              gap: 6px;
-              padding: 8px;
+              gap: 10px;
+              padding: 14px 12px;
               background-color: #f0fdf4;
-              border: 1px solid #dcfce7;
-              border-radius: 3px;
+              border: 1px solid #bbf7d0;
+              border-radius: 4px;
             }
             .feature-check {
-              color: #22c55e;
+              color: #16a34a;
               font-weight: bold;
-              min-width: 16px;
+              font-size: 16px;
+              min-width: 18px;
               flex-shrink: 0;
+              margin-top: 1px;
             }
             .feature-text {
               color: #333;
-              line-height: 1.4;
-              font-size: 11px;
+              line-height: 1.5;
+              font-size: 12px;
+              font-weight: 500;
             }
             .footer {
               margin-top: 12px;
