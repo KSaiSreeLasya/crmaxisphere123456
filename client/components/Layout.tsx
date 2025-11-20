@@ -37,11 +37,6 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
       icon: FileText,
       adminOnly: true,
     },
-    {
-      label: "Analytics",
-      href: "/admin/analytics",
-      icon: LineChart,
-    },
   ].filter((item) => !item.adminOnly || user?.role === "admin");
 
   const isActive = (href: string) => location.pathname === href;
