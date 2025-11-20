@@ -809,10 +809,13 @@ export default function InvoiceDetail() {
 
                 {/* Features Section */}
                 <div className="mb-12">
-                  <h3 className="text-xs font-bold text-gray-900 uppercase mb-6 pb-2 border-b border-gray-200">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6">
                     Package Scope & Features
+                  </h2>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-8">
+                    {invoice.packages?.name || "Package"}
                   </h3>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-6">
                     {(invoice.selected_features &&
                     invoice.selected_features.length > 0
                       ? invoice.selected_features
@@ -820,12 +823,14 @@ export default function InvoiceDetail() {
                     ).map((feature, index) => (
                       <div
                         key={index}
-                        className="flex items-start gap-3 p-4 bg-green-50 rounded-lg"
+                        className="flex items-start gap-3 p-4 bg-green-50 rounded-lg border border-green-200"
                       >
-                        <span className="text-green-600 font-bold flex-shrink-0">
+                        <span className="text-green-600 font-bold flex-shrink-0 text-lg mt-1">
                           ✓
                         </span>
-                        <span className="text-gray-700 text-sm">{feature}</span>
+                        <span className="text-gray-700 text-sm font-medium leading-relaxed">
+                          {feature}
+                        </span>
                       </div>
                     ))}
                   </div>
