@@ -334,20 +334,27 @@ export default function CreateInvoice() {
                   Select features from {selectedPackage.name} to include in this invoice
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {selectedPackage.features.map((feature, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={true}
-                        readOnly
-                        className="mt-1 w-5 h-5 text-green-600 rounded cursor-default"
-                      />
-                      <span className="text-gray-700 text-sm">{feature}</span>
-                    </div>
-                  ))}
+                  {Array.isArray(selectedPackage.features) &&
+                  selectedPackage.features.length > 0 ? (
+                    selectedPackage.features.map((feature, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={true}
+                          readOnly
+                          className="mt-1 w-5 h-5 text-green-600 rounded cursor-default flex-shrink-0"
+                        />
+                        <span className="text-gray-700 text-sm">{feature}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-sm col-span-2">
+                      No features available for this package
+                    </p>
+                  )}
                 </div>
               </div>
             )}
