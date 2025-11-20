@@ -157,6 +157,7 @@ export default function CreateInvoice() {
           gst_amount: gstAmount,
           total_amount: totalAmount,
           additional_notes: formData.additionalNotes,
+          selected_features: Array.from(selectedFeatures),
           created_by: user?.id,
         })
         .select()
