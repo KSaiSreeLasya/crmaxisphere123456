@@ -143,7 +143,9 @@ export default function AddSalesPersonPage() {
       });
 
       if (spError) {
-        throw new Error(spError.message || "Failed to create sales person record");
+        throw new Error(
+          spError.message || "Failed to create sales person record",
+        );
       }
 
       toast({
@@ -346,7 +348,9 @@ export default function AddSalesPersonPage() {
 
             {tableLoading ? (
               <div className="bg-white rounded-xl p-8 text-center">
-                <p className="text-muted-foreground">Loading sales persons...</p>
+                <p className="text-muted-foreground">
+                  Loading sales persons...
+                </p>
               </div>
             ) : salesPersons.length > 0 ? (
               <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
@@ -373,7 +377,10 @@ export default function AddSalesPersonPage() {
                     </thead>
                     <tbody className="divide-y divide-border">
                       {salesPersons.map((person) => (
-                        <tr key={person.id} className="hover:bg-gray-50 transition-colors">
+                        <tr
+                          key={person.id}
+                          className="hover:bg-gray-50 transition-colors"
+                        >
                           <td className="px-6 py-4 text-sm font-medium text-foreground">
                             {person.name}
                           </td>
@@ -399,9 +406,7 @@ export default function AddSalesPersonPage() {
                             {deleteConfirm === person.id ? (
                               <div className="inline-flex gap-2">
                                 <button
-                                  onClick={() =>
-                                    handleDelete(person.id)
-                                  }
+                                  onClick={() => handleDelete(person.id)}
                                   className="inline-flex items-center gap-1 px-2 py-1 bg-destructive text-white rounded text-xs font-medium hover:bg-destructive/90"
                                 >
                                   Confirm

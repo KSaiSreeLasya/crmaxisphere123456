@@ -314,7 +314,10 @@ export default function LeadsDashboard() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {leads.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={lead.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-4 text-sm font-medium text-foreground">
                         {lead.name}
                       </td>
