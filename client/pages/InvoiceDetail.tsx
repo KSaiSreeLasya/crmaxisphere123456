@@ -329,10 +329,13 @@ export default function InvoiceDetail() {
             }
             .page {
               position: relative;
-              min-height: 11in;
+              page-break-after: always;
+            }
+            .page:last-child {
+              page-break-after: avoid;
             }
             .page-content {
-              padding-bottom: 40px;
+              padding-bottom: 20px;
             }
             .divider-line {
               border-top: 1px solid #d1d5db;
