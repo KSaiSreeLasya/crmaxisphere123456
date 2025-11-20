@@ -34,6 +34,7 @@ export default function CreateInvoice() {
   const [showPackageDropdown, setShowPackageDropdown] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(new Set());
   const [formData, setFormData] = useState<FormData>({
     customerName: "",
     customerEmail: "",
