@@ -65,13 +65,28 @@ export default function CreateInvoice() {
         .eq("is_active", true)
         .order("price", { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error details:", error);
+        throw error;
+      }
       setPackages(data || []);
     } catch (error) {
       console.error("Error fetching packages:", error);
+      let errorMessage = "Failed to load packages";
+
+      if (typeof error === "object" && error !== null) {
+        if ("message" in error) {
+          errorMessage = String(error.message);
+        } else if ("error_description" in error) {
+          errorMessage = String(error.error_description);
+        } else if ("detail" in error) {
+          errorMessage = String(error.detail);
+        }
+      }
+
       toast({
         title: "Error",
-        description: "Failed to load packages",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
