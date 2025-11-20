@@ -244,9 +244,27 @@ export default function CreateInvoice() {
                     <p className="text-2xl font-bold text-gray-900 mb-3">
                       ₹{pkg.price.toLocaleString("en-IN")}
                     </p>
+                    <p className="text-xs text-gray-500 mb-3">/month</p>
                     <p className="text-sm text-gray-600 mb-4">
                       {pkg.description}
                     </p>
+                    <div className="mb-4 space-y-2">
+                      {pkg.features.slice(0, 3).map((feature, idx) => (
+                        <div key={idx} className="flex items-start gap-2">
+                          <span className="text-green-600 text-sm font-bold mt-0.5">
+                            ✓
+                          </span>
+                          <span className="text-xs text-gray-600">
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
+                      {pkg.features.length > 3 && (
+                        <p className="text-xs text-gray-500 mt-2">
+                          +{pkg.features.length - 3} more features
+                        </p>
+                      )}
+                    </div>
                     <button
                       type="button"
                       onClick={(e) => {
