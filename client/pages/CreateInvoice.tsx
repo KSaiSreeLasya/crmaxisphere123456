@@ -156,10 +156,25 @@ export default function CreateInvoice() {
       navigate(`/admin/invoices/${data.id}`);
     } catch (error) {
       console.error("Error creating invoice:", error);
+      let errorMessage = "Failed to create invoice";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === "object" && error !== null) {
+        if ("message" in error) {
+          errorMessage = String(error.message);
+        } else if ("error_description" in error) {
+          errorMessage = String(error.error_description);
+        } else if ("detail" in error) {
+          errorMessage = String(error.detail);
+        } else {
+          errorMessage = JSON.stringify(error);
+        }
+      }
+
       toast({
         title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to create invoice",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
