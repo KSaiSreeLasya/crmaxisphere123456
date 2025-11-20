@@ -425,7 +425,7 @@ export default function InvoiceDetail() {
 
           <!-- PAGE 2: Features (if there are features) -->
           ${
-            invoice.packages && invoice.packages.features.length > 0
+            invoice.packages && (invoice.selected_features?.length > 0 || invoice.packages.features.length > 0)
               ? `
           <div class="page">
             <div class="page-content">
