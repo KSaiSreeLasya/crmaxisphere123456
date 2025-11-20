@@ -448,7 +448,10 @@ export default function InvoiceDetail() {
               <div class="section">
                 <div class="section-title">Package Scope & Features</div>
                 <div class="features-grid">
-                  ${invoice.packages.features
+                  ${(invoice.selected_features && invoice.selected_features.length > 0
+                    ? invoice.selected_features
+                    : invoice.packages.features
+                  )
                     .map(
                       (feature) => `
                     <div class="feature-item">
