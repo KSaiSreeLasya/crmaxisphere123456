@@ -141,11 +141,9 @@ export default function InvoiceDetail() {
               padding-bottom: 10px;
             }
             .logo-img {
-              width: 60px;
-              height: 60px;
-              border-radius: 50%;
-              object-fit: cover;
+              height: 50px;
               flex-shrink: 0;
+              object-fit: contain;
             }
             .company-header {
               flex: 1;
