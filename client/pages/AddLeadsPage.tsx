@@ -21,6 +21,7 @@ interface Lead {
   statusId?: string;
   nextReminder?: string;
   note?: string;
+  assignedTo?: string;
 }
 
 interface LeadStatus {
@@ -49,6 +50,7 @@ export default function AddLeadsPage() {
     statusId: "",
     nextReminder: "",
     note: "",
+    assignedTo: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -146,6 +148,7 @@ export default function AddLeadsPage() {
           notes: formData.note || formData.actions || null,
           next_reminder: formData.nextReminder || null,
           status_id: statusId,
+          assigned_to: formData.assignedTo || null,
           created_by: user.id,
         })
         .select()
@@ -324,6 +327,14 @@ export default function AddLeadsPage() {
     <Layout showSidebar={true}>
       <div className="min-h-screen bg-background p-6">
         <div className="max-w-4xl mx-auto">
+          {/* Back Button on Top */}
+          <button
+            onClick={() => navigate("/leads")}
+            className="mb-6 flex items-center gap-2 px-4 py-2 text-primary hover:bg-primary/10 rounded-lg transition-colors font-medium"
+          >
+            ← Back to Leads
+          </button>
+
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-2">

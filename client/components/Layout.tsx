@@ -1,13 +1,6 @@
 import { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Users,
-  TrendingUp,
-  LineChart,
-  BarChart3,
-  LogOut,
-  FileText,
-} from "lucide-react";
+import { Users, TrendingUp, BarChart3, LogOut, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 

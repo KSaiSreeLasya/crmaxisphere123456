@@ -18,6 +18,7 @@ interface Lead {
   statusId?: string;
   nextReminder?: string;
   note?: string;
+  assignedTo?: string;
 }
 
 interface LeadStatus {
@@ -25,6 +26,11 @@ interface LeadStatus {
   name: string;
   order_index: number;
   color: string;
+}
+
+interface SalesPerson {
+  id: string;
+  name: string;
 }
 
 interface LeadsFormProps {
@@ -54,6 +60,7 @@ export default function LeadsForm({
       statusId: "",
       nextReminder: "",
       note: "",
+      assignedTo: "",
     },
   );
 
@@ -64,9 +71,11 @@ export default function LeadsForm({
   const [keywordInput, setKeywordInput] = useState("");
   const [linkInput, setLinkInput] = useState("");
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
+  const [salesPersons, setSalesPersons] = useState<SalesPerson[]>([]);
 
   useEffect(() => {
     fetchStatuses();
+    fetchSalesPersons();
   }, []);
 
   const fetchStatuses = async () => {
@@ -78,6 +87,18 @@ export default function LeadsForm({
       if (data) setStatuses(data);
     } catch (error) {
       console.error("Error fetching statuses:", error);
+    }
+  };
+
+  const fetchSalesPersons = async () => {
+    try {
+      const { data } = await supabase
+        .from("sales_persons")
+        .select("id, name")
+        .order("name");
+      if (data) setSalesPersons(data);
+    } catch (error) {
+      console.error("Error fetching sales persons:", error);
     }
   };
 
@@ -561,6 +582,26 @@ export default function LeadsForm({
                 }
                 className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">
+                Assign To
+              </label>
+              <select
+                value={formData.assignedTo || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, assignedTo: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
+              >
+                <option value="">Select a sales person</option>
+                {salesPersons.map((person) => (
+                  <option key={person.id} value={person.id}>
+                    {person.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 

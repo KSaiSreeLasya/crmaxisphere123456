@@ -17,7 +17,6 @@ import LeadsDashboard from "./pages/LeadsDashboard";
 import AddLeadsPage from "./pages/AddLeadsPage";
 import AddSalesPersonPage from "./pages/AddSalesPersonPage";
 import SalesDashboard from "./pages/SalesDashboard";
-import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import InvoiceList from "./pages/InvoiceList";
 import CreateInvoice from "./pages/CreateInvoice";
 import InvoiceDetail from "./pages/InvoiceDetail";
@@ -67,14 +66,6 @@ const AppContent = () => {
         path="/admin/sales-persons"
         element={
           <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/sales-persons/add"
-        element={
-          <ProtectedRoute>
             <AddSalesPersonPage />
           </ProtectedRoute>
         }
@@ -116,22 +107,6 @@ const AppContent = () => {
         element={
           <ProtectedRoute>
             <SalesDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/analytics"
-        element={
-          <ProtectedRoute>
-            <AnalyticsDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/analytics"
-        element={
-          <ProtectedRoute>
-            <AnalyticsDashboard />
           </ProtectedRoute>
         }
       />

@@ -211,7 +211,94 @@ export default function CreateInvoice() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Customer Information */}
+            {/* Step 1: Package Selection */}
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                Step 1: Choose Your AI Marketing Package
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                {packages.map((pkg) => (
+                  <div
+                    key={pkg.id}
+                    onClick={() => {
+                      setSelectedPackage(pkg);
+                      setFormData((prev) => ({
+                        ...prev,
+                        packageId: pkg.id,
+                      }));
+                      setErrors((prev) => {
+                        const newErrors = { ...prev };
+                        delete newErrors.packageId;
+                        return newErrors;
+                      });
+                    }}
+                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all ${
+                      selectedPackage?.id === pkg.id
+                        ? "border-purple-600 bg-purple-50"
+                        : "border-gray-200 bg-white hover:border-purple-300"
+                    }`}
+                  >
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      {pkg.name}
+                    </h3>
+                    <p className="text-2xl font-bold text-gray-900 mb-3">
+                      ₹{pkg.price.toLocaleString("en-IN")}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-4">
+                      {pkg.description}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedPackage(pkg);
+                        setFormData((prev) => ({
+                          ...prev,
+                          packageId: pkg.id,
+                        }));
+                      }}
+                      className={`w-full py-2 rounded-lg font-medium transition-colors ${
+                        selectedPackage?.id === pkg.id
+                          ? "bg-purple-600 text-white"
+                          : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                      }`}
+                    >
+                      {selectedPackage?.id === pkg.id
+                        ? "Selected"
+                        : "Select Package"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {errors.packageId && (
+                <p className="text-red-500 text-sm">{errors.packageId}</p>
+              )}
+            </div>
+
+            {/* Step 2: Package Features and Details */}
+            {selectedPackage && (
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  Package Scope & Features
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {selectedPackage.features.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        checked={true}
+                        readOnly
+                        className="mt-1 w-5 h-5 text-green-600 rounded cursor-default"
+                      />
+                      <span className="text-gray-700">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: Customer Information */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900 mb-6">
                 Customer Information
@@ -294,94 +381,7 @@ export default function CreateInvoice() {
               </div>
             </div>
 
-            {/* Packages Selection */}
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Select Package
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                {packages.map((pkg) => (
-                  <div
-                    key={pkg.id}
-                    onClick={() => {
-                      setSelectedPackage(pkg);
-                      setFormData((prev) => ({
-                        ...prev,
-                        packageId: pkg.id,
-                      }));
-                      setErrors((prev) => {
-                        const newErrors = { ...prev };
-                        delete newErrors.packageId;
-                        return newErrors;
-                      });
-                    }}
-                    className={`p-6 rounded-xl border-2 cursor-pointer transition-all ${
-                      selectedPackage?.id === pkg.id
-                        ? "border-purple-600 bg-purple-50"
-                        : "border-gray-200 bg-white hover:border-purple-300"
-                    }`}
-                  >
-                    <h3 className="font-semibold text-gray-900 mb-2">
-                      {pkg.name}
-                    </h3>
-                    <p className="text-2xl font-bold text-gray-900 mb-3">
-                      ₹{pkg.price.toLocaleString("en-IN")}
-                    </p>
-                    <p className="text-sm text-gray-600 mb-4">
-                      {pkg.description}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedPackage(pkg);
-                        setFormData((prev) => ({
-                          ...prev,
-                          packageId: pkg.id,
-                        }));
-                      }}
-                      className={`w-full py-2 rounded-lg font-medium transition-colors ${
-                        selectedPackage?.id === pkg.id
-                          ? "bg-purple-600 text-white"
-                          : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-                      }`}
-                    >
-                      {selectedPackage?.id === pkg.id
-                        ? "Selected"
-                        : "Select Package"}
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              {errors.packageId && (
-                <p className="text-red-500 text-sm">{errors.packageId}</p>
-              )}
-            </div>
-
-            {/* Package Features and Details */}
-            {selectedPackage && (
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                  Package Scope & Features
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {selectedPackage.features.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <input
-                        type="checkbox"
-                        checked={true}
-                        readOnly
-                        className="mt-1 w-5 h-5 text-green-600 rounded cursor-default"
-                      />
-                      <span className="text-gray-700">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Pricing & Payment */}
+            {/* Step 4: Pricing & Payment */}
             {selectedPackage && (
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900 mb-6">
@@ -443,10 +443,10 @@ export default function CreateInvoice() {
               </div>
             )}
 
-            {/* Additional Information */}
+            {/* Step 5: Additional Information */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900 mb-6">
-                Additional Information
+                Step 5: Additional Information
               </h2>
 
               <div>
