@@ -297,19 +297,25 @@ export default function CreateInvoice() {
             {/* Step 2: Package Features and Details */}
             {selectedPackage && (
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                  Package Scope & Features
+                <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                  Scope / Features
                 </h2>
+                <p className="text-sm text-gray-600 mb-6">
+                  Select features from AI Starter Package to include in this invoice
+                </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {selectedPackage.features.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3">
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100"
+                    >
                       <input
                         type="checkbox"
                         checked={true}
                         readOnly
                         className="mt-1 w-5 h-5 text-green-600 rounded cursor-default"
                       />
-                      <span className="text-gray-700">{feature}</span>
+                      <span className="text-gray-700 text-sm">{feature}</span>
                     </div>
                   ))}
                 </div>
