@@ -37,6 +37,7 @@ export default function CreateInvoice() {
   const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(
     new Set(),
   );
+  const [customBasePrice, setCustomBasePrice] = useState<number | null>(null);
   const [formData, setFormData] = useState<FormData>({
     customerName: "",
     customerEmail: "",
@@ -141,7 +142,7 @@ export default function CreateInvoice() {
         throw new Error("Package not selected");
       }
 
-      const basePrice = selectedPackage.price;
+      const basePrice = customBasePrice ?? selectedPackage.price;
       const gstAmount = (basePrice * formData.gstPercentage) / 100;
       const totalAmount = basePrice + gstAmount;
 
@@ -218,7 +219,7 @@ export default function CreateInvoice() {
     }
   };
 
-  const basePrice = selectedPackage?.price || 0;
+  const basePrice = customBasePrice ?? selectedPackage?.price ?? 0;
   const gstAmount = (basePrice * formData.gstPercentage) / 100;
   const totalAmount = basePrice + gstAmount;
 
@@ -500,9 +501,22 @@ export default function CreateInvoice() {
                 <div className="space-y-4 mb-6">
                   <div className="flex items-center justify-between pb-4 border-b border-gray-200">
                     <span className="text-gray-700">Package Price</span>
-                    <span className="font-medium text-gray-900">
-                      ₹{basePrice.toLocaleString("en-IN")}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-500">
+                        (Original: ₹
+                        {selectedPackage.price.toLocaleString("en-IN")})
+                      </span>
+                      <input
+                        type="number"
+                        value={customBasePrice ?? selectedPackage.price}
+                        onChange={(e) =>
+                          setCustomBasePrice(Number(e.target.value))
+                        }
+                        min="0"
+                        step="100"
+                        className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between pb-4 border-b border-gray-200">
