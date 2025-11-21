@@ -390,7 +390,11 @@ export default function LeadsDashboard() {
           </TabsContent>
 
           {/* Table View */}
-          <TabsContent value="table" className="w-full" onClick={() => setDialogOpen(false)}>
+          <TabsContent
+            value="table"
+            className="w-full"
+            onClick={() => setDialogOpen(false)}
+          >
             {leads.length > 0 ? (
               <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
@@ -508,7 +512,10 @@ export default function LeadsDashboard() {
         />
 
         {/* Delete Confirmation Dialog */}
-        <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <AlertDialog
+          open={deleteConfirmOpen}
+          onOpenChange={setDeleteConfirmOpen}
+        >
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Delete Lead</AlertDialogTitle>
@@ -641,10 +648,7 @@ function LeadDetailDialog({
                   <button
                     onClick={() => {
                       setDialogOpen(false);
-                      setTimeout(
-                        () => handleDeleteLead(lead.id),
-                        300
-                      );
+                      setTimeout(() => handleDeleteLead(lead.id), 300);
                     }}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:opacity-90 font-medium"
                   >

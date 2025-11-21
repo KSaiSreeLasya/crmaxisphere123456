@@ -16,9 +16,8 @@ interface SalesPersonData {
 export default function SalesPersonProfile() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [salesPersonData, setSalesPersonData] = useState<SalesPersonData | null>(
-    null,
-  );
+  const [salesPersonData, setSalesPersonData] =
+    useState<SalesPersonData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -239,7 +238,9 @@ export default function SalesPersonProfile() {
                         Added
                       </h4>
                       <p className="text-foreground">
-                        {new Date(salesPersonData.created_at).toLocaleDateString()}
+                        {new Date(
+                          salesPersonData.created_at,
+                        ).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
