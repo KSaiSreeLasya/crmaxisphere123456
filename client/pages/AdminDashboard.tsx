@@ -243,23 +243,78 @@ export default function AdminDashboard() {
           </div>
 
           {/* Upcoming Reminders Section */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Upcoming Reminders
+          {upcomingReminders > 0 ? (
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-8">
+              <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                Upcoming Reminders (Next 7 Days)
               </h2>
-              <span className="text-sm text-gray-500">0 total</span>
-            </div>
-            <div className="flex flex-col items-center justify-center py-12">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <Bell className="w-6 h-6 text-green-600" />
+              <div className="space-y-3">
+                {userLeads
+                  .filter((lead) => {
+                    if (!lead.next_reminder) return false;
+                    const reminderDate = new Date(lead.next_reminder);
+                    const today = new Date();
+
+                    today.setHours(0, 0, 0, 0);
+                    reminderDate.setHours(0, 0, 0, 0);
+
+                    const sevenDaysFromNow = new Date(today);
+                    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+
+                    return reminderDate >= today && reminderDate <= sevenDaysFromNow;
+                  })
+                  .sort((a, b) => {
+                    const dateA = new Date(a.next_reminder || "").getTime();
+                    const dateB = new Date(b.next_reminder || "").getTime();
+                    return dateA - dateB;
+                  })
+                  .map((lead) => {
+                    const status = statuses.find((s) => s.id === lead.status_id);
+                    return (
+                      <div
+                        key={lead.id}
+                        className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-2 h-2 bg-orange-400 rounded-full" />
+                          <div>
+                            <p className="font-medium text-gray-900">
+                              {lead.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {status?.name || "Unknown"} • {lead.company}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-medium text-gray-900">
+                            {new Date(lead.next_reminder!).toLocaleDateString()}
+                          </p>
+                          <p className="text-xs text-gray-500">Reminder</p>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
-              <p className="text-gray-600 font-medium">No upcoming reminders</p>
-              <p className="text-gray-400 text-sm">
-                All your tasks are up to date
-              </p>
             </div>
-          </div>
+          ) : (
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Upcoming Reminders
+                </h2>
+              </div>
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                  <Bell className="w-6 h-6 text-green-600" />
+                </div>
+                <p className="text-gray-600 font-medium">No upcoming reminders</p>
+                <p className="text-gray-400 text-sm">
+                  All your tasks are up to date
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Next 7 Days Summary */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-8">
@@ -268,15 +323,44 @@ export default function AdminDashboard() {
             </h2>
             <div className="grid grid-cols-3 gap-6">
               <div className="text-center">
-                <p className="text-3xl font-bold text-gray-900">0</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {userLeads.filter((lead) => {
+                    if (!lead.next_reminder) return false;
+                    const reminderDate = new Date(lead.next_reminder);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    reminderDate.setHours(0, 0, 0, 0);
+                    return reminderDate < today;
+                  }).length}
+                </p>
                 <p className="text-gray-500 text-sm mt-2">Overdue</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-gray-900">0</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {userLeads.filter((lead) => {
+                    if (!lead.next_reminder) return false;
+                    const reminderDate = new Date(lead.next_reminder);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    reminderDate.setHours(0, 0, 0, 0);
+                    return reminderDate.getTime() === today.getTime();
+                  }).length}
+                </p>
                 <p className="text-gray-500 text-sm mt-2">Due today</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-gray-900">0</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {userLeads.filter((lead) => {
+                    if (!lead.next_reminder) return false;
+                    const reminderDate = new Date(lead.next_reminder);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    reminderDate.setHours(0, 0, 0, 0);
+                    const sevenDaysFromNow = new Date(today);
+                    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+                    return reminderDate > today && reminderDate <= sevenDaysFromNow;
+                  }).length}
+                </p>
                 <p className="text-gray-500 text-sm mt-2">Later</p>
               </div>
             </div>
