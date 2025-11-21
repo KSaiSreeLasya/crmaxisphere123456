@@ -72,6 +72,8 @@ export default function LeadsDashboard() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [leadToDelete, setLeadToDelete] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
