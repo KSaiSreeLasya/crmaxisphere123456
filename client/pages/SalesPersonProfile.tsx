@@ -52,6 +52,16 @@ export default function SalesPersonProfile() {
         setSalesPersonData(data);
         setEditForm(data);
       }
+
+      const { data: allSalesPersons, error: allError } = await supabase
+        .from("sales_persons")
+        .select("id, name, email, phone")
+        .neq("user_id", user.id)
+        .order("name");
+
+      if (!allError && allSalesPersons) {
+        setOtherSalesPersons(allSalesPersons);
+      }
     } catch (error) {
       console.error("Error fetching sales person data:", error);
       toast({
