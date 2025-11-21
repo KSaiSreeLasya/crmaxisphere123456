@@ -41,6 +41,8 @@ export default function AddSalesPersonPage() {
   const [tableLoading, setTableLoading] = useState(true);
   const [salesPersons, setSalesPersons] = useState<ExistingSalesPerson[]>([]);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<Partial<SalesPerson>>({});
 
   useEffect(() => {
     fetchSalesPersons();
