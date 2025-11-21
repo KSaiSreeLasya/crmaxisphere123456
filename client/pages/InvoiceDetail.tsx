@@ -171,6 +171,8 @@ export default function InvoiceDetail() {
               color: #666;
               line-height: 1.4;
               margin-top: 8px;
+              max-width: 350px;
+              word-wrap: break-word;
             }
             .header {
               display: flex;
@@ -185,7 +187,8 @@ export default function InvoiceDetail() {
               text-align: right;
             }
             .invoice-meta {
-              text-align: right;
+              text-align: left;
+              margin-top: 12px;
             }
             .invoice-meta p {
               margin: 4px 0;
@@ -374,10 +377,7 @@ export default function InvoiceDetail() {
               </div>
 
               <!-- Header with Invoice Meta -->
-              <div class="header">
-                <div class="flex-1">
-                </div>
-                <div class="invoice-meta">
+              <div class="invoice-meta">
                   <p class="invoice-number">Invoice Number: ${invoice.invoice_number}</p>
                   <p><strong>Date:</strong> ${new Date(
                     invoice.created_at,
@@ -387,7 +387,6 @@ export default function InvoiceDetail() {
                       30 * 24 * 60 * 60 * 1000,
                   ).toLocaleDateString("en-IN")}</p>
                   <p><strong>Payment Terms:</strong> Due within 30 days</p>
-                </div>
               </div>
 
               <!-- Bill To Section -->
