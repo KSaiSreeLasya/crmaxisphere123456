@@ -13,6 +13,13 @@ interface SalesPersonData {
   created_at: string;
 }
 
+interface OtherSalesPerson {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export default function SalesPersonProfile() {
   const { user } = useAuth();
   const { toast } = useToast();
