@@ -77,6 +77,32 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleReassignLead = async (leadId: string, newAssignedTo: string) => {
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .update({ assigned_to: newAssignedTo })
+        .eq("id", leadId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Lead reassigned successfully",
+      });
+
+      setReassigningLeadId(null);
+      await fetchData();
+    } catch (error) {
+      console.error("Error reassigning lead:", error);
+      toast({
+        title: "Error",
+        description: "Failed to reassign lead",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getStatusColor = (statusId: string) => {
     const status = statuses.find((s) => s.id === statusId);
     if (!status) return "bg-gray-100 text-gray-800";
