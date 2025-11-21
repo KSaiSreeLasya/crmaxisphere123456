@@ -29,7 +29,9 @@ export default function SalesPersonProfile() {
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [editForm, setEditForm] = useState<Partial<SalesPersonData>>({});
-  const [otherSalesPersons, setOtherSalesPersons] = useState<OtherSalesPerson[]>([]);
+  const [otherSalesPersons, setOtherSalesPersons] = useState<
+    OtherSalesPerson[]
+  >([]);
 
   useEffect(() => {
     fetchSalesPersonData();
@@ -147,133 +149,135 @@ export default function SalesPersonProfile() {
             {/* Profile Card */}
             <div className="lg:col-span-2">
               {salesPersonData ? (
-            <div className="bg-white border border-border rounded-lg p-8 shadow-sm">
-              {isEditing ? (
-                <div className="space-y-6">
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-2 block">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      value={editForm.name || ""}
-                      onChange={(e) =>
-                        setEditForm({ ...editForm, name: e.target.value })
-                      }
-                      className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
+                <div className="bg-white border border-border rounded-lg p-8 shadow-sm">
+                  {isEditing ? (
+                    <div className="space-y-6">
+                      <div>
+                        <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          value={editForm.name || ""}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, name: e.target.value })
+                          }
+                          className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
 
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-2 block">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      value={editForm.email || ""}
-                      onChange={(e) =>
-                        setEditForm({ ...editForm, email: e.target.value })
-                      }
-                      className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
+                      <div>
+                        <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          value={editForm.email || ""}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, email: e.target.value })
+                          }
+                          className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
 
-                  <div>
-                    <label className="text-sm font-semibold text-muted-foreground mb-2 block">
-                      Phone
-                    </label>
-                    <input
-                      type="tel"
-                      value={editForm.phone || ""}
-                      onChange={(e) =>
-                        setEditForm({ ...editForm, phone: e.target.value })
-                      }
-                      className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
+                      <div>
+                        <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                          Phone
+                        </label>
+                        <input
+                          type="tel"
+                          value={editForm.phone || ""}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, phone: e.target.value })
+                          }
+                          className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
 
-                  <div className="flex gap-3 justify-end pt-6 border-t border-border">
-                    <button
-                      onClick={handleCancel}
-                      disabled={isSaving}
-                      className="inline-flex items-center gap-2 px-4 py-2 border border-input text-foreground rounded-lg hover:bg-secondary font-medium transition-colors disabled:opacity-50"
-                    >
-                      <X className="w-4 h-4" />
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleSave}
-                      disabled={isSaving}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Save className="w-4 h-4" />
-                      {isSaving ? "Saving..." : "Save Changes"}
-                    </button>
-                  </div>
+                      <div className="flex gap-3 justify-end pt-6 border-t border-border">
+                        <button
+                          onClick={handleCancel}
+                          disabled={isSaving}
+                          className="inline-flex items-center gap-2 px-4 py-2 border border-input text-foreground rounded-lg hover:bg-secondary font-medium transition-colors disabled:opacity-50"
+                        >
+                          <X className="w-4 h-4" />
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleSave}
+                          disabled={isSaving}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <Save className="w-4 h-4" />
+                          {isSaving ? "Saving..." : "Save Changes"}
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex items-start justify-between mb-6">
+                        <div>
+                          <h2 className="text-2xl font-bold text-foreground mb-1">
+                            {salesPersonData.name}
+                          </h2>
+                          <p className="text-sm text-muted-foreground">
+                            ID: {salesPersonData.id}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setIsEditing(true)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium transition-colors"
+                        >
+                          <Edit className="w-4 h-4" />
+                          Edit
+                        </button>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-semibold text-muted-foreground mb-1">
+                            Email
+                          </h4>
+                          <p className="text-foreground">
+                            <a
+                              href={`mailto:${salesPersonData.email}`}
+                              className="text-primary hover:underline"
+                            >
+                              {salesPersonData.email}
+                            </a>
+                          </p>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-muted-foreground mb-1">
+                            Phone
+                          </h4>
+                          <p className="text-foreground">
+                            {salesPersonData.phone}
+                          </p>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-muted-foreground mb-1">
+                            Added
+                          </h4>
+                          <p className="text-foreground">
+                            {new Date(
+                              salesPersonData.created_at,
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div>
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <h2 className="text-2xl font-bold text-foreground mb-1">
-                        {salesPersonData.name}
-                      </h2>
-                      <p className="text-sm text-muted-foreground">
-                        ID: {salesPersonData.id}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium transition-colors"
-                    >
-                      <Edit className="w-4 h-4" />
-                      Edit
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-sm font-semibold text-muted-foreground mb-1">
-                        Email
-                      </h4>
-                      <p className="text-foreground">
-                        <a
-                          href={`mailto:${salesPersonData.email}`}
-                          className="text-primary hover:underline"
-                        >
-                          {salesPersonData.email}
-                        </a>
-                      </p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-semibold text-muted-foreground mb-1">
-                        Phone
-                      </h4>
-                      <p className="text-foreground">{salesPersonData.phone}</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-semibold text-muted-foreground mb-1">
-                        Added
-                      </h4>
-                      <p className="text-foreground">
-                        {new Date(
-                          salesPersonData.created_at,
-                        ).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
+                <div className="bg-white border border-border rounded-lg p-8 text-center">
+                  <p className="text-muted-foreground">
+                    Profile information not found
+                  </p>
                 </div>
               )}
-              </div>
-            ) : (
-              <div className="bg-white border border-border rounded-lg p-8 text-center">
-                <p className="text-muted-foreground">
-                  Profile information not found
-                </p>
-              </div>
-            )}
             </div>
 
             {/* Other Sales Persons */}

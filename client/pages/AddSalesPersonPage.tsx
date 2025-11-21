@@ -231,7 +231,11 @@ export default function AddSalesPersonPage() {
   };
 
   const handleEditSave = async (id: string) => {
-    if (!editForm.name?.trim() || !editForm.email?.trim() || !editForm.phone?.trim()) {
+    if (
+      !editForm.name?.trim() ||
+      !editForm.email?.trim() ||
+      !editForm.phone?.trim()
+    ) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",

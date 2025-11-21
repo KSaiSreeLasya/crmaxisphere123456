@@ -54,8 +54,11 @@ export default function AdminDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
   const [loading, setLoading] = useState(true);
-  const [reassigningLeadId, setReassigningLeadId] = useState<string | null>(null);
-  const [currentSalesPerson, setCurrentSalesPerson] = useState<CurrentSalesPerson | null>(null);
+  const [reassigningLeadId, setReassigningLeadId] = useState<string | null>(
+    null,
+  );
+  const [currentSalesPerson, setCurrentSalesPerson] =
+    useState<CurrentSalesPerson | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -261,7 +264,9 @@ export default function AdminDashboard() {
                     const sevenDaysFromNow = new Date(today);
                     sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
 
-                    return reminderDate >= today && reminderDate <= sevenDaysFromNow;
+                    return (
+                      reminderDate >= today && reminderDate <= sevenDaysFromNow
+                    );
                   })
                   .sort((a, b) => {
                     const dateA = new Date(a.next_reminder || "").getTime();
@@ -269,7 +274,9 @@ export default function AdminDashboard() {
                     return dateA - dateB;
                   })
                   .map((lead) => {
-                    const status = statuses.find((s) => s.id === lead.status_id);
+                    const status = statuses.find(
+                      (s) => s.id === lead.status_id,
+                    );
                     return (
                       <div
                         key={lead.id}
@@ -308,7 +315,9 @@ export default function AdminDashboard() {
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <Bell className="w-6 h-6 text-green-600" />
                 </div>
-                <p className="text-gray-600 font-medium">No upcoming reminders</p>
+                <p className="text-gray-600 font-medium">
+                  No upcoming reminders
+                </p>
                 <p className="text-gray-400 text-sm">
                   All your tasks are up to date
                 </p>
@@ -324,42 +333,50 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-3 gap-6">
               <div className="text-center">
                 <p className="text-3xl font-bold text-gray-900">
-                  {userLeads.filter((lead) => {
-                    if (!lead.next_reminder) return false;
-                    const reminderDate = new Date(lead.next_reminder);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    reminderDate.setHours(0, 0, 0, 0);
-                    return reminderDate < today;
-                  }).length}
+                  {
+                    userLeads.filter((lead) => {
+                      if (!lead.next_reminder) return false;
+                      const reminderDate = new Date(lead.next_reminder);
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      reminderDate.setHours(0, 0, 0, 0);
+                      return reminderDate < today;
+                    }).length
+                  }
                 </p>
                 <p className="text-gray-500 text-sm mt-2">Overdue</p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-bold text-gray-900">
-                  {userLeads.filter((lead) => {
-                    if (!lead.next_reminder) return false;
-                    const reminderDate = new Date(lead.next_reminder);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    reminderDate.setHours(0, 0, 0, 0);
-                    return reminderDate.getTime() === today.getTime();
-                  }).length}
+                  {
+                    userLeads.filter((lead) => {
+                      if (!lead.next_reminder) return false;
+                      const reminderDate = new Date(lead.next_reminder);
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      reminderDate.setHours(0, 0, 0, 0);
+                      return reminderDate.getTime() === today.getTime();
+                    }).length
+                  }
                 </p>
                 <p className="text-gray-500 text-sm mt-2">Due today</p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-bold text-gray-900">
-                  {userLeads.filter((lead) => {
-                    if (!lead.next_reminder) return false;
-                    const reminderDate = new Date(lead.next_reminder);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    reminderDate.setHours(0, 0, 0, 0);
-                    const sevenDaysFromNow = new Date(today);
-                    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
-                    return reminderDate > today && reminderDate <= sevenDaysFromNow;
-                  }).length}
+                  {
+                    userLeads.filter((lead) => {
+                      if (!lead.next_reminder) return false;
+                      const reminderDate = new Date(lead.next_reminder);
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      reminderDate.setHours(0, 0, 0, 0);
+                      const sevenDaysFromNow = new Date(today);
+                      sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+                      return (
+                        reminderDate > today && reminderDate <= sevenDaysFromNow
+                      );
+                    }).length
+                  }
                 </p>
                 <p className="text-gray-500 text-sm mt-2">Later</p>
               </div>
@@ -554,7 +571,9 @@ export default function AdminDashboard() {
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {userLeads.map((lead) => {
-                      const status = statuses.find((s) => s.id === lead.status_id);
+                      const status = statuses.find(
+                        (s) => s.id === lead.status_id,
+                      );
                       return (
                         <tr key={lead.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 text-sm font-medium text-gray-900">
@@ -574,7 +593,9 @@ export default function AdminDashboard() {
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-600">
                             {lead.next_reminder
-                              ? new Date(lead.next_reminder).toLocaleDateString()
+                              ? new Date(
+                                  lead.next_reminder,
+                                ).toLocaleDateString()
                               : "-"}
                           </td>
                           <td className="px-6 py-4 text-sm">
@@ -615,7 +636,6 @@ export default function AdminDashboard() {
               </div>
             </div>
           )}
-
         </div>
       </div>
     </Layout>
