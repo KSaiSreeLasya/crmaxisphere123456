@@ -504,6 +504,7 @@ export default function LeadsDashboard() {
           open={dialogOpen}
           onOpenChange={setDialogOpen}
           onStatusChange={handleStatusChange}
+          onLeadsChange={fetchLeads}
         />
 
         {/* Delete Confirmation Dialog */}
