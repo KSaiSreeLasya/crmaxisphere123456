@@ -616,59 +616,6 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* Upcoming Reminders Section */}
-          {upcomingReminders > 0 && (
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">
-                Upcoming Reminders (Next 7 Days)
-              </h2>
-              <div className="space-y-3">
-                {userLeads
-                  .filter((lead) => {
-                    if (!lead.next_reminder) return false;
-                    const reminderDate = new Date(lead.next_reminder);
-                    const today = new Date();
-
-                    today.setHours(0, 0, 0, 0);
-                    reminderDate.setHours(0, 0, 0, 0);
-
-                    const sevenDaysFromNow = new Date(today);
-                    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
-
-                    return reminderDate >= today && reminderDate <= sevenDaysFromNow;
-                  })
-                  .sort((a, b) => {
-                    const dateA = new Date(a.next_reminder || "").getTime();
-                    const dateB = new Date(b.next_reminder || "").getTime();
-                    return dateA - dateB;
-                  })
-                  .map((lead) => (
-                    <div
-                      key={lead.id}
-                      className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-orange-400 rounded-full" />
-                        <div>
-                          <p className="font-medium text-gray-900">
-                            {lead.name}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {lead.company}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-gray-900">
-                          {new Date(lead.next_reminder!).toLocaleDateString()}
-                        </p>
-                        <p className="text-xs text-gray-500">Reminder Date</p>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </Layout>
