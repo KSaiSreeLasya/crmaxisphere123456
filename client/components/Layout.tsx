@@ -53,11 +53,16 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
     navigate("/login");
   };
 
+  const getRoleLabel = () => {
+    if (user?.role === "admin") return "Admin";
+    return "Sales Person";
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-white sticky top-0 z-40">
-        <div className="flex items-center justify-between h-16 px-6">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-border">
           <Link to="/" className="flex items-center gap-2">
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2Fc74248048c80462f93d5f4025f650682%2Fc2993ec3161b4da2bec916066d5b8ea1?format=webp&width=800"
@@ -69,48 +74,56 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
             </span>
           </Link>
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground hidden sm:block">
-              {user?.first_name} {user?.last_name}
-            </span>
-            <button
-              onClick={handleLogout}
-              className="p-2 hover:bg-secondary rounded-lg transition-colors"
-              title="Logout"
-            >
-              <LogOut className="w-5 h-5 text-foreground" />
-            </button>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
+              <div className="text-right hidden sm:block">
+                <div className="text-sm font-medium text-foreground">
+                  {user?.first_name} {user?.last_name}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {user?.email}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {getRoleLabel()}
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 hover:bg-secondary rounded-lg transition-colors"
+                title="Logout"
+              >
+                <LogOut className="w-5 h-5 text-foreground" />
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Top Navigation Tabs */}
+        {showSidebar && (
+          <nav className="hidden md:flex items-center justify-center gap-1 px-6 bg-white overflow-x-auto">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2",
+                    isActive(item.href)
+                      ? "border-primary text-primary"
+                      : "border-transparent text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+        )}
       </header>
 
-      <div className="flex h-[calc(100vh-64px)]">
-        {/* Sidebar */}
-        {showSidebar && (
-          <aside className="w-64 border-r border-border bg-sidebar overflow-y-auto hidden md:block">
-            <nav className="p-4 space-y-2">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    className={cn(
-                      "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
-                      isActive(item.href)
-                        ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    )}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span className="font-medium">{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-          </aside>
-        )}
-
+      <div className="flex h-[calc(100vh-120px)]">
         {/* Mobile Nav */}
         {showSidebar && (
           <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border">
@@ -140,7 +153,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
         {/* Main Content */}
         <main
           className={cn(
-            "flex-1 overflow-y-auto",
+            "flex-1 overflow-y-auto w-full",
             showSidebar && "pb-16 md:pb-0",
           )}
         >

@@ -135,18 +135,19 @@ export default function InvoiceDetail() {
             }
             .logo-header {
               display: flex;
+              flex-direction: column;
               align-items: flex-start;
-              gap: 15px;
+              gap: 12px;
               margin-bottom: 10px;
               padding-bottom: 10px;
             }
             .logo-img {
               height: 50px;
-              flex-shrink: 0;
+              width: auto;
               object-fit: contain;
             }
             .company-header {
-              flex: 1;
+              width: 100%;
             }
             .company-header h1 {
               margin: 0;
@@ -171,6 +172,8 @@ export default function InvoiceDetail() {
               color: #666;
               line-height: 1.4;
               margin-top: 8px;
+              max-width: 350px;
+              word-wrap: break-word;
             }
             .header {
               display: flex;
@@ -185,7 +188,8 @@ export default function InvoiceDetail() {
               text-align: right;
             }
             .invoice-meta {
-              text-align: right;
+              text-align: left;
+              margin-top: 12px;
             }
             .invoice-meta p {
               margin: 4px 0;
@@ -374,10 +378,7 @@ export default function InvoiceDetail() {
               </div>
 
               <!-- Header with Invoice Meta -->
-              <div class="header">
-                <div class="flex-1">
-                </div>
-                <div class="invoice-meta">
+              <div class="invoice-meta">
                   <p class="invoice-number">Invoice Number: ${invoice.invoice_number}</p>
                   <p><strong>Date:</strong> ${new Date(
                     invoice.created_at,
@@ -387,7 +388,6 @@ export default function InvoiceDetail() {
                       30 * 24 * 60 * 60 * 1000,
                   ).toLocaleDateString("en-IN")}</p>
                   <p><strong>Payment Terms:</strong> Due within 30 days</p>
-                </div>
               </div>
 
               <!-- Bill To Section -->
@@ -447,7 +447,7 @@ export default function InvoiceDetail() {
                     </div>
                     <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #d1d5db; padding: 8px 0; margin-bottom: 8px;">
                       <span class="pricing-label">Tax (${invoice.gst_percentage}% GST):</span>
-                      <span class="pricing-value">₹${invoice.gst_amount.toLocaleString(
+                      <span class="pricing-value">���${invoice.gst_amount.toLocaleString(
                         "en-IN",
                         {
                           minimumFractionDigits: 2,
@@ -502,8 +502,23 @@ export default function InvoiceDetail() {
                   <h1>Axisphere</h1>
                   <div class="company-name">${COMPANY_NAME}</div>
                   <div class="invoice-title">Invoice Bill</div>
+                  <div class="company-address">${COMPANY_ADDRESS}</div>
                 </div>
               </div>
+
+              <!-- Invoice Meta -->
+              <div class="invoice-meta">
+                <p class="invoice-number">Invoice Number: ${invoice.invoice_number}</p>
+                <p><strong>Date:</strong> ${new Date(
+                  invoice.created_at,
+                ).toLocaleDateString("en-IN")}</p>
+                <p><strong>Due Date:</strong> ${new Date(
+                  new Date(invoice.created_at).getTime() +
+                    30 * 24 * 60 * 60 * 1000,
+                ).toLocaleDateString("en-IN")}</p>
+              </div>
+
+              <div class="divider-line"></div>
 
               <!-- Features Page Content -->
               <div style="margin-bottom: 30px;">
@@ -798,10 +813,20 @@ export default function InvoiceDetail() {
                       {COMPANY_NAME}
                     </p>
                     <p className="text-xs text-gray-600 mt-1">Invoice Bill</p>
+                    <p className="text-xs text-gray-600 mt-3 max-w-sm leading-relaxed">
+                      {COMPANY_ADDRESS}
+                    </p>
                   </div>
                   <div className="text-right">
+                    <p className="text-sm font-semibold text-gray-900 mb-3">
+                      Invoice Number: {invoice.invoice_number}
+                    </p>
+                    <p className="text-xs text-gray-600 mb-2">
+                      <strong>Date:</strong> {formatDate(invoice.created_at)}
+                    </p>
                     <p className="text-xs text-gray-600">
-                      <strong>Invoice Number:</strong> {invoice.invoice_number}
+                      <strong>Due Date:</strong>{" "}
+                      {formatDate(dueDate.toISOString())}
                     </p>
                   </div>
                 </div>
