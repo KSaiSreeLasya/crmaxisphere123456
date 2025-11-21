@@ -164,6 +164,11 @@ export default function LeadsDashboard() {
     setDialogOpen(true);
   };
 
+  const handleEditLead = (lead: Lead) => {
+    setSelectedLead(lead);
+    setDialogOpen(true);
+  };
+
   const handleStatusChange = async (leadId: string, statusId: string) => {
     try {
       await supabase
