@@ -385,7 +385,8 @@ export default function LeadsDashboard() {
                       {leads.map((lead) => (
                         <tr
                           key={lead.id}
-                          className="hover:bg-gray-50 transition-colors"
+                          className="hover:bg-gray-50 transition-colors cursor-pointer"
+                          onClick={() => handleSelectLead(lead)}
                         >
                           <td className="px-6 py-4 text-sm font-medium text-foreground">
                             {lead.name}
@@ -415,7 +416,10 @@ export default function LeadsDashboard() {
                                 ).toLocaleDateString()
                               : "-"}
                           </td>
-                          <td className="px-6 py-4 text-sm text-right space-x-2">
+                          <td
+                            className="px-6 py-4 text-sm text-right space-x-2"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <button
                               onClick={() => navigate(`/leads/edit/${lead.id}`)}
                               className="inline-flex items-center gap-1 px-3 py-1 border border-input text-foreground rounded hover:bg-secondary text-xs transition-colors font-medium"
