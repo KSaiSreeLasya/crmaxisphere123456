@@ -138,7 +138,12 @@ export default function AdminDashboard() {
     return colorMap[status.color] || "bg-gray-100 text-gray-800";
   };
 
-  const userLeads = leads.filter((l) => l.assigned_to === user?.id);
+  const userLeads = leads.filter((l) => {
+    if (user?.role === "sales") {
+      return l.assigned_to === currentSalesPerson?.id;
+    }
+    return l.assigned_to === user?.id;
+  });
   const assignedLeads = userLeads.length;
 
   const upcomingReminders = userLeads.filter((lead) => {
