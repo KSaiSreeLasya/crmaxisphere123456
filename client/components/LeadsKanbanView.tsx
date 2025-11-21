@@ -327,12 +327,6 @@ export default function LeadsKanbanView() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      distance: { x: 8, y: 8 },
-    }),
-  );
-
   useEffect(() => {
     fetchData();
   }, [user?.id]);
