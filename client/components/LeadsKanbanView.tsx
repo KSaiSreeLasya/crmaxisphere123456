@@ -22,6 +22,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LeadActivityLog from "@/components/LeadActivityLog";
 
 interface LeadStatus {
   id: string;
