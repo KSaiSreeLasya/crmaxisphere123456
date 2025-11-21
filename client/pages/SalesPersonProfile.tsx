@@ -3,7 +3,7 @@ import Layout from "@/components/Layout";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { Edit, Save, X } from "lucide-react";
+import { Edit, Save, X, Mail, Phone } from "lucide-react";
 
 interface SalesPersonData {
   id: string;
@@ -134,17 +134,19 @@ export default function SalesPersonProfile() {
   return (
     <Layout showSidebar={true}>
       <div className="p-6">
-        <div className="max-w-2xl">
+        <div className="max-w-7xl">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-foreground">Sales Person</h1>
             <p className="text-muted-foreground mt-2">
-              Manage your profile information
+              Manage your profile information and view team members
             </p>
           </div>
 
-          {/* Profile Card */}
-          {salesPersonData ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Profile Card */}
+            <div className="lg:col-span-2">
+              {salesPersonData ? (
             <div className="bg-white border border-border rounded-lg p-8 shadow-sm">
               {isEditing ? (
                 <div className="space-y-6">
@@ -264,14 +266,49 @@ export default function SalesPersonProfile() {
                   </div>
                 </div>
               )}
+              </div>
+            ) : (
+              <div className="bg-white border border-border rounded-lg p-8 text-center">
+                <p className="text-muted-foreground">
+                  Profile information not found
+                </p>
+              </div>
+            )}
             </div>
-          ) : (
-            <div className="bg-white border border-border rounded-lg p-8 text-center">
-              <p className="text-muted-foreground">
-                Profile information not found
-              </p>
+
+            {/* Other Sales Persons */}
+            <div>
+              <div className="bg-white border border-border rounded-lg p-6 shadow-sm h-full">
+                <h2 className="text-lg font-semibold text-foreground mb-6">
+                  Team Members
+                </h2>
+                {otherSalesPersons.length > 0 ? (
+                  <div className="space-y-4">
+                    {otherSalesPersons.map((person) => (
+                      <div
+                        key={person.id}
+                        className="p-4 border border-border rounded-lg hover:bg-secondary/50 transition-colors"
+                      >
+                        <p className="font-medium text-foreground text-sm mb-1">
+                          {person.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          {person.email}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {person.phone}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-8">
+                    No other team members
+                  </p>
+                )}
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </Layout>
