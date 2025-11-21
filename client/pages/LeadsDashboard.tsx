@@ -60,6 +60,9 @@ export default function LeadsDashboard() {
   const [salesPersons, setSalesPersons] = useState<SalesPerson[]>([]);
   const [loading, setLoading] = useState(true);
   const [autoAssignLoading, setAutoAssignLoading] = useState(false);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
