@@ -41,6 +41,8 @@ export default function AddSalesPersonPage() {
   const [tableLoading, setTableLoading] = useState(true);
   const [salesPersons, setSalesPersons] = useState<ExistingSalesPerson[]>([]);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<Partial<SalesPerson>>({});
 
   useEffect(() => {
     fetchSalesPersons();
@@ -213,6 +215,88 @@ export default function AddSalesPersonPage() {
     }
   };
 
+  const handleEditStart = (person: ExistingSalesPerson) => {
+    setEditingId(person.id);
+    setEditForm({
+      name: person.name,
+      email: person.email,
+      phone: person.phone,
+      status: person.status,
+    });
+  };
+
+  const handleEditCancel = () => {
+    setEditingId(null);
+    setEditForm({});
+  };
+
+  const handleEditSave = async (id: string) => {
+    if (
+      !editForm.name?.trim() ||
+      !editForm.email?.trim() ||
+      !editForm.phone?.trim()
+    ) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const updateData: Record<string, any> = {
+        name: editForm.name,
+        email: editForm.email,
+        phone: editForm.phone,
+        status: editForm.status,
+      };
+
+      if (editForm.password && editForm.password.length >= 6) {
+        const { data: spData } = await supabase
+          .from("sales_persons")
+          .select("user_id")
+          .eq("id", id)
+          .single();
+
+        if (spData?.user_id) {
+          const { error: userError } = await supabase
+            .from("users")
+            .update({ password_hash: editForm.password })
+            .eq("id", spData.user_id);
+
+          if (userError) throw userError;
+        }
+      }
+
+      const { error } = await supabase
+        .from("sales_persons")
+        .update(updateData)
+        .eq("id", id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Sales person updated successfully",
+      });
+
+      setEditingId(null);
+      setEditForm({});
+      await fetchSalesPersons();
+    } catch (error) {
+      console.error("Error updating sales person:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update sales person",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout showSidebar={true}>
       <div className="min-h-screen bg-background p-6">
@@ -381,53 +465,129 @@ export default function AddSalesPersonPage() {
                           key={person.id}
                           className="hover:bg-gray-50 transition-colors"
                         >
-                          <td className="px-6 py-4 text-sm font-medium text-foreground">
-                            {person.name}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-foreground">
-                            {person.email}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-foreground">
-                            {person.phone}
-                          </td>
-                          <td className="px-6 py-4 text-sm">
-                            <span className="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                              {person.status}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 text-sm text-right space-x-2">
-                            <button
-                              disabled
-                              className="inline-flex items-center gap-1 px-3 py-1 border border-input text-foreground rounded text-xs transition-colors font-medium opacity-50 cursor-not-allowed"
-                            >
-                              <Edit className="w-3 h-3" />
-                              Edit
-                            </button>
-                            {deleteConfirm === person.id ? (
-                              <div className="inline-flex gap-2">
-                                <button
-                                  onClick={() => handleDelete(person.id)}
-                                  className="inline-flex items-center gap-1 px-2 py-1 bg-destructive text-white rounded text-xs font-medium hover:bg-destructive/90"
+                          {editingId === person.id ? (
+                            <>
+                              <td className="px-6 py-4 text-sm">
+                                <input
+                                  type="text"
+                                  value={editForm.name || ""}
+                                  onChange={(e) =>
+                                    setEditForm({
+                                      ...editForm,
+                                      name: e.target.value,
+                                    })
+                                  }
+                                  className="w-full px-2 py-1 border border-input rounded bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                              </td>
+                              <td className="px-6 py-4 text-sm">
+                                <input
+                                  type="email"
+                                  value={editForm.email || ""}
+                                  onChange={(e) =>
+                                    setEditForm({
+                                      ...editForm,
+                                      email: e.target.value,
+                                    })
+                                  }
+                                  className="w-full px-2 py-1 border border-input rounded bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                              </td>
+                              <td className="px-6 py-4 text-sm">
+                                <input
+                                  type="tel"
+                                  value={editForm.phone || ""}
+                                  onChange={(e) =>
+                                    setEditForm({
+                                      ...editForm,
+                                      phone: e.target.value,
+                                    })
+                                  }
+                                  className="w-full px-2 py-1 border border-input rounded bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                              </td>
+                              <td className="px-6 py-4 text-sm">
+                                <select
+                                  value={editForm.status || ""}
+                                  onChange={(e) =>
+                                    setEditForm({
+                                      ...editForm,
+                                      status: e.target.value,
+                                    })
+                                  }
+                                  className="w-full px-2 py-1 border border-input rounded bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                                 >
-                                  Confirm
+                                  <option value="active">Active</option>
+                                  <option value="inactive">Inactive</option>
+                                </select>
+                              </td>
+                              <td className="px-6 py-4 text-sm text-right space-x-2">
+                                <button
+                                  onClick={() => handleEditSave(person.id)}
+                                  disabled={loading}
+                                  className="inline-flex items-center gap-1 px-3 py-1 bg-primary text-primary-foreground rounded text-xs font-medium hover:opacity-90 disabled:opacity-50"
+                                >
+                                  Save
                                 </button>
                                 <button
-                                  onClick={() => setDeleteConfirm(null)}
-                                  className="inline-flex items-center gap-1 px-2 py-1 border border-input text-foreground rounded text-xs font-medium hover:bg-secondary"
+                                  onClick={handleEditCancel}
+                                  className="inline-flex items-center gap-1 px-3 py-1 border border-input text-foreground rounded text-xs font-medium hover:bg-secondary"
                                 >
                                   Cancel
                                 </button>
-                              </div>
-                            ) : (
-                              <button
-                                onClick={() => setDeleteConfirm(person.id)}
-                                className="inline-flex items-center gap-1 px-3 py-1 border border-destructive text-destructive rounded hover:bg-destructive/10 text-xs transition-colors font-medium"
-                              >
-                                <Trash2 className="w-3 h-3" />
-                                Delete
-                              </button>
-                            )}
-                          </td>
+                              </td>
+                            </>
+                          ) : (
+                            <>
+                              <td className="px-6 py-4 text-sm font-medium text-foreground">
+                                {person.name}
+                              </td>
+                              <td className="px-6 py-4 text-sm text-foreground">
+                                {person.email}
+                              </td>
+                              <td className="px-6 py-4 text-sm text-foreground">
+                                {person.phone}
+                              </td>
+                              <td className="px-6 py-4 text-sm">
+                                <span className="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                                  {person.status}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 text-sm text-right space-x-2">
+                                <button
+                                  onClick={() => handleEditStart(person)}
+                                  className="inline-flex items-center gap-1 px-3 py-1 border border-input text-foreground rounded hover:bg-secondary text-xs transition-colors font-medium"
+                                >
+                                  <Edit className="w-3 h-3" />
+                                  Edit
+                                </button>
+                                {deleteConfirm === person.id ? (
+                                  <div className="inline-flex gap-2">
+                                    <button
+                                      onClick={() => handleDelete(person.id)}
+                                      className="inline-flex items-center gap-1 px-2 py-1 bg-destructive text-white rounded text-xs font-medium hover:bg-destructive/90"
+                                    >
+                                      Confirm
+                                    </button>
+                                    <button
+                                      onClick={() => setDeleteConfirm(null)}
+                                      className="inline-flex items-center gap-1 px-2 py-1 border border-input text-foreground rounded text-xs font-medium hover:bg-secondary"
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => setDeleteConfirm(person.id)}
+                                    className="inline-flex items-center gap-1 px-3 py-1 border border-destructive text-destructive rounded hover:bg-destructive/10 text-xs transition-colors font-medium"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                    Delete
+                                  </button>
+                                )}
+                              </td>
+                            </>
+                          )}
                         </tr>
                       ))}
                     </tbody>
