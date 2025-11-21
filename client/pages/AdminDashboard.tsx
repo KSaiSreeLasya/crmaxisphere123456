@@ -500,7 +500,7 @@ export default function AdminDashboard() {
             <h2 className="text-lg font-semibold text-gray-900 mb-6">
               Quick Stats
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
                 <p className="text-3xl font-bold text-gray-900">
                   {leads.length}

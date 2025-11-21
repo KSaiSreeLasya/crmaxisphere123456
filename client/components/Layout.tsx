@@ -83,9 +83,9 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
         <div className="flex items-center justify-between h-auto py-3 px-6 border-b border-border">
           <Link to="/" className="flex items-center gap-2">
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F3c998b3ff9204c11af8b6ffa6ad40d16%2F574ca4298f33463c885f85248ad393f4?format=webp&width=800"
+              src="https://cdn.builder.io/api/v1/image/assets%2F3c998b3ff9204c11af8b6ffa6ad40d16%2F574ca4298f33463c885f85248ad393f4?format=webp&width=1024"
               alt="Axisphere"
-              className="w-16 h-16"
+              className="w-20 h-20"
             />
             <span className="font-bold text-lg text-foreground hidden sm:block">
               AXISPHERE CRM
