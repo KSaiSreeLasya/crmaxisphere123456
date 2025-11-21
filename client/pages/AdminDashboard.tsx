@@ -43,10 +43,12 @@ interface LeadStatus {
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [salesPersons, setSalesPersons] = useState<SalesPerson[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
   const [loading, setLoading] = useState(true);
+  const [reassigningLeadId, setReassigningLeadId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) {
