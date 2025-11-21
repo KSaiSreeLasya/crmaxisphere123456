@@ -540,6 +540,7 @@ function LeadDetailDialog({
   open,
   onOpenChange,
   onStatusChange,
+  onLeadsChange,
 }: {
   lead: Lead | null;
   statuses: LeadStatus[];
@@ -547,6 +548,7 @@ function LeadDetailDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onStatusChange: (leadId: string, statusId: string) => Promise<void>;
+  onLeadsChange?: () => void;
 }) {
   const [isChangingStatus, setIsChangingStatus] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
