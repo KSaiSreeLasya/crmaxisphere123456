@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ReactNode as ReactNodeType } from "react";
 import {
   Users,
   TrendingUp,
