@@ -487,7 +487,11 @@ function LeadDetailDialog({
   onStatusChange: (leadId: string, statusId: string) => Promise<void>;
 }) {
   const [isChangingStatus, setIsChangingStatus] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [editForm, setEditForm] = useState<Partial<Lead>>({});
+  const { toast } = useToast();
 
   if (!lead) return null;
 
@@ -503,12 +507,74 @@ function LeadDetailDialog({
     }
   };
 
+  const handleEditClick = () => {
+    setEditForm({
+      name: lead.name,
+      email: lead.email,
+      phone: lead.phone,
+      company: lead.company,
+      job_title: lead.job_title,
+      notes: lead.notes,
+    });
+    setIsEditing(true);
+  };
+
+  const handleSaveEdit = async () => {
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .update({
+          name: editForm.name,
+          email: editForm.email,
+          phone: editForm.phone,
+          company: editForm.company,
+          job_title: editForm.job_title,
+          notes: editForm.notes,
+        })
+        .eq("id", lead.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Lead updated successfully.",
+      });
+
+      setIsEditing(false);
+      // Refresh the dialog with updated data
+      window.location.reload();
+    } catch (error) {
+      console.error("Error updating lead:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update lead.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-2xl">{lead.name}</DialogTitle>
-          <DialogDescription>{lead.company}</DialogDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <DialogTitle className="text-2xl">{lead.name}</DialogTitle>
+              <DialogDescription>{lead.company}</DialogDescription>
+            </div>
+            {!isEditing && (
+              <button
+                onClick={handleEditClick}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium"
+              >
+                <Edit className="w-4 h-4" />
+                Edit
+              </button>
+            )}
+          </div>
         </DialogHeader>
 
         <Tabs defaultValue="overview" className="flex-1 flex flex-col">
@@ -520,68 +586,179 @@ function LeadDetailDialog({
           <div className="flex-1 overflow-y-auto">
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-6 mt-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                    Job Title
-                  </h4>
-                  <p className="text-foreground">{lead.job_title || "-"}</p>
-                </div>
+              {isEditing ? (
+                <div className="space-y-6">
+                  <div>
+                    <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={editForm.name || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, name: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
 
-                <div>
-                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                    Email
-                  </h4>
-                  <p className="text-foreground break-all">
-                    {lead.email || "-"}
-                  </p>
-                </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                        Company
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.company || ""}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, company: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </div>
 
-                <div>
-                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                    Phone
-                  </h4>
-                  <p className="text-foreground">{lead.phone || "-"}</p>
-                </div>
+                    <div>
+                      <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                        Job Title
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.job_title || ""}
+                        onChange={(e) =>
+                          setEditForm({
+                            ...editForm,
+                            job_title: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </div>
+                  </div>
 
-                <div>
-                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                    Assigned To
-                  </h4>
-                  <p className="text-foreground">
-                    {assignedTo?.name || "Unassigned"}
-                  </p>
-                </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        value={editForm.email || ""}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, email: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </div>
 
-                <div className="col-span-2">
-                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                    Status
-                  </h4>
-                  <select
-                    disabled={isChangingStatus}
-                    defaultValue={lead.status_id}
-                    onChange={(e) => handleStatusChange(e.target.value)}
-                    className="w-full px-3 py-2 border border-input rounded-lg bg-white text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {statuses.map((status) => (
-                      <option key={status.id} value={status.id}>
-                        {status.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                    <div>
+                      <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                        Phone
+                      </label>
+                      <input
+                        type="tel"
+                        value={editForm.phone || ""}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, phone: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </div>
+                  </div>
 
-                {lead.next_reminder && (
-                  <div className="col-span-2">
+                  <div>
+                    <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                      Notes
+                    </label>
+                    <textarea
+                      value={editForm.notes || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, notes: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div className="flex gap-3 justify-end">
+                    <button
+                      onClick={() => setIsEditing(false)}
+                      className="px-4 py-2 border border-input text-foreground rounded-lg hover:bg-secondary font-medium transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSaveEdit}
+                      disabled={isSaving}
+                      className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                    >
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
                     <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                      Next Reminder
+                      Job Title
                     </h4>
-                    <p className="text-foreground">
-                      {new Date(lead.next_reminder).toLocaleDateString()}
+                    <p className="text-foreground">{lead.job_title || "-"}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Email
+                    </h4>
+                    <p className="text-foreground break-all">
+                      {lead.email || "-"}
                     </p>
                   </div>
-                )}
-              </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Phone
+                    </h4>
+                    <p className="text-foreground">{lead.phone || "-"}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Assigned To
+                    </h4>
+                    <p className="text-foreground">
+                      {assignedTo?.name || "Unassigned"}
+                    </p>
+                  </div>
+
+                  <div className="col-span-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Status
+                    </h4>
+                    <select
+                      disabled={isChangingStatus}
+                      defaultValue={lead.status_id}
+                      onChange={(e) => handleStatusChange(e.target.value)}
+                      className="w-full px-3 py-2 border border-input rounded-lg bg-white text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {statuses.map((status) => (
+                        <option key={status.id} value={status.id}>
+                          {status.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {lead.next_reminder && (
+                    <div className="col-span-2">
+                      <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                        Next Reminder
+                      </h4>
+                      <p className="text-foreground">
+                        {new Date(lead.next_reminder).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </TabsContent>
 
             {/* Activity Log Tab */}
