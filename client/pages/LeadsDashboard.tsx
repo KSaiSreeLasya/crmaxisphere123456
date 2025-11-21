@@ -456,9 +456,16 @@ export default function LeadsDashboard() {
                               : "-"}
                           </td>
                           <td
-                            className="px-6 py-4 text-sm text-right"
+                            className="px-6 py-4 text-sm text-right space-x-2"
                             onClick={(e) => e.stopPropagation()}
                           >
+                            <button
+                              onClick={() => handleEditLead(lead)}
+                              className="inline-flex items-center gap-1 px-3 py-1 border border-input text-foreground rounded hover:bg-secondary text-xs transition-colors font-medium"
+                            >
+                              <Edit className="w-3 h-3" />
+                              Edit
+                            </button>
                             <button
                               onClick={() => handleDeleteLead(lead.id)}
                               className="inline-flex items-center gap-1 px-3 py-1 border border-destructive text-destructive rounded hover:bg-destructive/10 text-xs transition-colors font-medium"
