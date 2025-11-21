@@ -80,7 +80,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-white sticky top-0 z-40">
-        <div className="flex items-center justify-between h-16 px-6 border-b border-border">
+        <div className="flex items-center justify-between h-auto py-3 px-6 border-b border-border">
           <Link to="/" className="flex items-center gap-2">
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2F3c998b3ff9204c11af8b6ffa6ad40d16%2F574ca4298f33463c885f85248ad393f4?format=webp&width=800"
