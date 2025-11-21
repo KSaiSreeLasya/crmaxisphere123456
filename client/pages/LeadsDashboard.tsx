@@ -370,9 +370,7 @@ export default function LeadsDashboard() {
                           </td>
                           <td className="px-6 py-4 text-sm text-right space-x-2">
                             <button
-                              onClick={() =>
-                                navigate(`/leads/edit/${lead.id}`)
-                              }
+                              onClick={() => navigate(`/leads/edit/${lead.id}`)}
                               className="inline-flex items-center gap-1 px-3 py-1 border border-input text-foreground rounded hover:bg-secondary text-xs transition-colors font-medium"
                             >
                               <Edit className="w-3 h-3" />

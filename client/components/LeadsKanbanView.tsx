@@ -80,8 +80,7 @@ function DraggableLeadCard({
   const statusName =
     statuses.find((s) => s.id === lead.status_id)?.name || "Unknown";
   const salesPersonName =
-    salesPersons.find((sp) => sp.id === lead.assigned_to)?.name ||
-    "Unassigned";
+    salesPersons.find((sp) => sp.id === lead.assigned_to)?.name || "Unassigned";
 
   return (
     <div
@@ -268,7 +267,9 @@ function LeadDetailDialog({
             <h4 className="text-sm font-semibold text-muted-foreground mb-2">
               Assigned To
             </h4>
-            <p className="text-foreground">{assignedTo?.name || "Unassigned"}</p>
+            <p className="text-foreground">
+              {assignedTo?.name || "Unassigned"}
+            </p>
           </div>
 
           <div className="col-span-2">
@@ -334,10 +335,7 @@ export default function LeadsKanbanView() {
   const fetchData = async () => {
     try {
       const [statusesRes, leadsRes, personRes] = await Promise.all([
-        supabase
-          .from("lead_status_pipeline")
-          .select("*")
-          .order("order_index"),
+        supabase.from("lead_status_pipeline").select("*").order("order_index"),
         supabase.from("leads").select("*"),
         supabase.from("sales_persons").select("id, name"),
       ]);
