@@ -811,10 +811,20 @@ export default function InvoiceDetail() {
                       {COMPANY_NAME}
                     </p>
                     <p className="text-xs text-gray-600 mt-1">Invoice Bill</p>
+                    <p className="text-xs text-gray-600 mt-3 max-w-sm leading-relaxed">
+                      {COMPANY_ADDRESS}
+                    </p>
                   </div>
                   <div className="text-right">
+                    <p className="text-sm font-semibold text-gray-900 mb-3">
+                      Invoice Number: {invoice.invoice_number}
+                    </p>
+                    <p className="text-xs text-gray-600 mb-2">
+                      <strong>Date:</strong> {formatDate(invoice.created_at)}
+                    </p>
                     <p className="text-xs text-gray-600">
-                      <strong>Invoice Number:</strong> {invoice.invoice_number}
+                      <strong>Due Date:</strong>{" "}
+                      {formatDate(dueDate.toISOString())}
                     </p>
                   </div>
                 </div>
