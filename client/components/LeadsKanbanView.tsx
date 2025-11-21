@@ -498,7 +498,6 @@ export default function LeadsKanbanView() {
       </div>
 
       <DndContext
-        sensors={sensors}
         collisionDetection={closestCorners}
         onDragEnd={handleDragEnd}
         onDragStart={(event) => {
