@@ -2,7 +2,24 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import LeadsKanbanView from "@/components/LeadsKanbanView";
+import LeadActivityLog from "@/components/LeadActivityLog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -52,6 +69,11 @@ export default function LeadsDashboard() {
   const [salesPersons, setSalesPersons] = useState<SalesPerson[]>([]);
   const [loading, setLoading] = useState(true);
   const [autoAssignLoading, setAutoAssignLoading] = useState(false);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [leadToDelete, setLeadToDelete] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -105,12 +127,76 @@ export default function LeadsDashboard() {
     }
   };
 
-  const handleDeleteLead = async (leadId: string) => {
+  const handleDeleteLead = (leadId: string) => {
+    setLeadToDelete(leadId);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!leadToDelete) return;
+
     try {
-      await supabase.from("leads").delete().eq("id", leadId);
+      await supabase.from("leads").delete().eq("id", leadToDelete);
+      toast({
+        title: "Success",
+        description: "Lead deleted successfully.",
+      });
       fetchLeads();
+      if (selectedLead?.id === leadToDelete) {
+        setDialogOpen(false);
+        setSelectedLead(null);
+      }
     } catch (error) {
       console.error("Error deleting lead:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete lead.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleteConfirmOpen(false);
+      setLeadToDelete(null);
+    }
+  };
+
+  const handleSelectLead = (lead: Lead) => {
+    setSelectedLead(lead);
+    setDialogOpen(true);
+  };
+
+  const handleEditLead = (lead: Lead) => {
+    setSelectedLead(lead);
+    setDialogOpen(true);
+  };
+
+  const handleStatusChange = async (leadId: string, statusId: string) => {
+    try {
+      await supabase
+        .from("leads")
+        .update({ status_id: statusId })
+        .eq("id", leadId);
+
+      setLeads((prevLeads) =>
+        prevLeads.map((l) =>
+          l.id === leadId ? { ...l, status_id: statusId } : l,
+        ),
+      );
+
+      setSelectedLead((prev) =>
+        prev ? { ...prev, status_id: statusId } : null,
+      );
+
+      toast({
+        title: "Success",
+        description: "Lead status updated successfully.",
+      });
+    } catch (error) {
+      console.error("Error updating status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update status.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -304,7 +390,11 @@ export default function LeadsDashboard() {
           </TabsContent>
 
           {/* Table View */}
-          <TabsContent value="table" className="w-full">
+          <TabsContent
+            value="table"
+            className="w-full"
+            onClick={() => setDialogOpen(false)}
+          >
             {leads.length > 0 ? (
               <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
@@ -338,7 +428,8 @@ export default function LeadsDashboard() {
                       {leads.map((lead) => (
                         <tr
                           key={lead.id}
-                          className="hover:bg-gray-50 transition-colors"
+                          className="hover:bg-gray-50 transition-colors cursor-pointer"
+                          onClick={() => handleSelectLead(lead)}
                         >
                           <td className="px-6 py-4 text-sm font-medium text-foreground">
                             {lead.name}
@@ -368,9 +459,12 @@ export default function LeadsDashboard() {
                                 ).toLocaleDateString()
                               : "-"}
                           </td>
-                          <td className="px-6 py-4 text-sm text-right space-x-2">
+                          <td
+                            className="px-6 py-4 text-sm text-right space-x-2"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <button
-                              onClick={() => navigate(`/leads/edit/${lead.id}`)}
+                              onClick={() => handleEditLead(lead)}
                               className="inline-flex items-center gap-1 px-3 py-1 border border-input text-foreground rounded hover:bg-secondary text-xs transition-colors font-medium"
                             >
                               <Edit className="w-3 h-3" />
@@ -405,7 +499,364 @@ export default function LeadsDashboard() {
             )}
           </TabsContent>
         </Tabs>
+
+        {/* Lead Detail Dialog */}
+        <LeadDetailDialog
+          lead={selectedLead}
+          statuses={statuses}
+          salesPersons={salesPersons}
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onStatusChange={handleStatusChange}
+          onLeadsChange={fetchLeads}
+        />
+
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog
+          open={deleteConfirmOpen}
+          onOpenChange={setDeleteConfirmOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Lead</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete this lead? This action cannot be
+                undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <div className="flex justify-end gap-3">
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleConfirmDelete}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Delete
+              </AlertDialogAction>
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </Layout>
+  );
+}
+
+function LeadDetailDialog({
+  lead,
+  statuses,
+  salesPersons,
+  open,
+  onOpenChange,
+  onStatusChange,
+  onLeadsChange,
+}: {
+  lead: Lead | null;
+  statuses: LeadStatus[];
+  salesPersons: SalesPerson[];
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onStatusChange: (leadId: string, statusId: string) => Promise<void>;
+  onLeadsChange?: () => void;
+}) {
+  const [isChangingStatus, setIsChangingStatus] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [editForm, setEditForm] = useState<Partial<Lead>>({});
+  const { toast } = useToast();
+
+  if (!lead) return null;
+
+  const currentStatus = statuses.find((s) => s.id === lead.status_id);
+  const assignedTo = salesPersons.find((sp) => sp.id === lead.assigned_to);
+
+  const handleStatusChange = async (newStatusId: string) => {
+    setIsChangingStatus(true);
+    try {
+      await onStatusChange(lead.id, newStatusId);
+    } finally {
+      setIsChangingStatus(false);
+    }
+  };
+
+  const handleEditClick = () => {
+    setEditForm({
+      name: lead.name,
+      email: lead.email,
+      phone: lead.phone,
+      company: lead.company,
+      job_title: lead.job_title,
+      notes: lead.notes,
+    });
+    setIsEditing(true);
+  };
+
+  const handleSaveEdit = async () => {
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .update({
+          name: editForm.name,
+          email: editForm.email,
+          phone: editForm.phone,
+          company: editForm.company,
+          job_title: editForm.job_title,
+          notes: editForm.notes,
+        })
+        .eq("id", lead.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Lead updated successfully.",
+      });
+
+      setIsEditing(false);
+      onLeadsChange?.();
+    } catch (error) {
+      console.error("Error updating lead:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update lead.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
+        <DialogHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <DialogTitle className="text-2xl">{lead.name}</DialogTitle>
+              <DialogDescription>{lead.company}</DialogDescription>
+            </div>
+            <div className="flex gap-2">
+              {!isEditing && (
+                <>
+                  <button
+                    onClick={handleEditClick}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 font-medium"
+                  >
+                    <Edit className="w-4 h-4" />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDialogOpen(false);
+                      setTimeout(() => handleDeleteLead(lead.id), 300);
+                    }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:opacity-90 font-medium"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </DialogHeader>
+
+        <Tabs defaultValue="overview" className="flex-1 flex flex-col">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="activity">Activity Log</TabsTrigger>
+          </TabsList>
+
+          <div className="flex-1 overflow-y-auto">
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6 mt-6">
+              {isEditing ? (
+                <div className="space-y-6">
+                  <div>
+                    <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={editForm.name || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, name: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                        Company
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.company || ""}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, company: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                        Job Title
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.job_title || ""}
+                        onChange={(e) =>
+                          setEditForm({
+                            ...editForm,
+                            job_title: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        value={editForm.email || ""}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, email: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                        Phone
+                      </label>
+                      <input
+                        type="tel"
+                        value={editForm.phone || ""}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, phone: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-semibold text-muted-foreground mb-2 block">
+                      Notes
+                    </label>
+                    <textarea
+                      value={editForm.notes || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, notes: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div className="flex gap-3 justify-end">
+                    <button
+                      onClick={() => setIsEditing(false)}
+                      className="px-4 py-2 border border-input text-foreground rounded-lg hover:bg-secondary font-medium transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSaveEdit}
+                      disabled={isSaving}
+                      className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                    >
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Job Title
+                    </h4>
+                    <p className="text-foreground">{lead.job_title || "-"}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Email
+                    </h4>
+                    <p className="text-foreground break-all">
+                      {lead.email || "-"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Phone
+                    </h4>
+                    <p className="text-foreground">{lead.phone || "-"}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Assigned To
+                    </h4>
+                    <p className="text-foreground">
+                      {assignedTo?.name || "Unassigned"}
+                    </p>
+                  </div>
+
+                  <div className="col-span-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Status
+                    </h4>
+                    <select
+                      disabled={isChangingStatus}
+                      defaultValue={lead.status_id}
+                      onChange={(e) => handleStatusChange(e.target.value)}
+                      className="w-full px-3 py-2 border border-input rounded-lg bg-white text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {statuses.map((status) => (
+                        <option key={status.id} value={status.id}>
+                          {status.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {lead.next_reminder && (
+                    <div className="col-span-2">
+                      <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                        Next Reminder
+                      </h4>
+                      <p className="text-foreground">
+                        {new Date(lead.next_reminder).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </TabsContent>
+
+            {/* Activity Log Tab */}
+            <TabsContent value="activity" className="mt-6">
+              <LeadActivityLog
+                key={refreshKey}
+                leadId={lead.id}
+                initialNote={lead.notes}
+                onNoteAdded={() => setRefreshKey((prev) => prev + 1)}
+              />
+            </TabsContent>
+          </div>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
   );
 }

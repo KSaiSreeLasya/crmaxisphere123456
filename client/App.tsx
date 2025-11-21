@@ -16,6 +16,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import LeadsDashboard from "./pages/LeadsDashboard";
 import AddLeadsPage from "./pages/AddLeadsPage";
 import AddSalesPersonPage from "./pages/AddSalesPersonPage";
+import SalesPersonProfile from "./pages/SalesPersonProfile";
 import SalesDashboard from "./pages/SalesDashboard";
 import InvoiceList from "./pages/InvoiceList";
 import CreateInvoice from "./pages/CreateInvoice";
@@ -91,6 +92,14 @@ const AppContent = () => {
         element={
           <ProtectedRoute>
             <AddLeadsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sales-person"
+        element={
+          <ProtectedRoute>
+            <SalesPersonProfile />
           </ProtectedRoute>
         }
       />
