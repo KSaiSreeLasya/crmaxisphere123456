@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
+import LeadsKanbanView from "@/components/LeadsKanbanView";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -13,6 +15,7 @@ import {
   Edit,
   Trash2,
   Users,
+  LayoutGrid,
 } from "lucide-react";
 
 interface LeadStatus {
