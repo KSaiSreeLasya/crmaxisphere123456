@@ -496,12 +496,25 @@ export default function InvoiceDetail() {
           <div class="page">
             <div class="page-content">
               <!-- Logo and Company Header -->
-              <div class="logo-header">
-                <img src="${LOGO_URL}" alt="Axisphere Logo" class="logo-img">
-                <div class="company-header">
-                  <h1>Axisphere</h1>
-                  <div class="company-name">${COMPANY_NAME}</div>
-                  <div class="invoice-title">Invoice Bill</div>
+              <div class="header">
+                <div class="logo-header">
+                  <img src="${LOGO_URL}" alt="Axisphere Logo" class="logo-img">
+                  <div class="company-header">
+                    <h1>Axisphere</h1>
+                    <div class="company-name">${COMPANY_NAME}</div>
+                    <div class="invoice-title">Invoice Bill</div>
+                    <div class="company-address">${COMPANY_ADDRESS}</div>
+                  </div>
+                </div>
+                <div class="invoice-meta">
+                  <p class="invoice-number">Invoice Number: ${invoice.invoice_number}</p>
+                  <p><strong>Date:</strong> ${new Date(
+                    invoice.created_at,
+                  ).toLocaleDateString("en-IN")}</p>
+                  <p><strong>Due Date:</strong> ${new Date(
+                    new Date(invoice.created_at).getTime() +
+                      30 * 24 * 60 * 60 * 1000,
+                  ).toLocaleDateString("en-IN")}</p>
                 </div>
               </div>
 
