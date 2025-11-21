@@ -534,7 +534,7 @@ export default function LeadsKanbanView() {
         <DragOverlay>
           {activeId
             ? leads.find((l) => l.id === activeId) && (
-                <div className="bg-white p-3 rounded-lg border-2 border-gray-200 shadow-xl opacity-75 w-36">
+                <div className="bg-white p-3 rounded-lg border-2 border-gray-200 shadow-xl opacity-75">
                   <h3 className="font-semibold text-sm text-foreground">
                     {leads.find((l) => l.id === activeId)?.name}
                   </h3>
