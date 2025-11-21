@@ -31,6 +31,7 @@ interface Lead {
   job_title: string;
   status_id: string;
   assigned_to?: string;
+  next_reminder?: string;
 }
 
 interface LeadStatus {
@@ -38,6 +39,11 @@ interface LeadStatus {
   name: string;
   order_index: number;
   color: string;
+}
+
+interface CurrentSalesPerson {
+  id: string;
+  name: string;
 }
 
 export default function AdminDashboard() {
