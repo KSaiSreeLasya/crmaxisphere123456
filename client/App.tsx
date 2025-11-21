@@ -96,6 +96,14 @@ const AppContent = () => {
         }
       />
       <Route
+        path="/sales-person"
+        element={
+          <ProtectedRoute>
+            <SalesPersonProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin/sales"
         element={
           <ProtectedRoute>
