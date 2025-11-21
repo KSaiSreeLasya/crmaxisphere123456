@@ -264,7 +264,9 @@ function LeadDetailDialog({
                   <h4 className="text-sm font-semibold text-muted-foreground mb-2">
                     Email
                   </h4>
-                  <p className="text-foreground break-all">{lead.email || "-"}</p>
+                  <p className="text-foreground break-all">
+                    {lead.email || "-"}
+                  </p>
                 </div>
 
                 <div>
