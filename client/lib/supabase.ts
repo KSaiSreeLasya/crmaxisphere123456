@@ -85,6 +85,16 @@ export type Database = {
           created_at: string;
         };
       };
+      lead_notes: {
+        Row: {
+          id: string;
+          lead_id: string;
+          note_text: string;
+          created_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+      };
     };
   };
 };
