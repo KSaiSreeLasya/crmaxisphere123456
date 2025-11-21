@@ -31,11 +31,11 @@ export default function Login() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-white rounded-lg mb-4">
-            <div className="text-xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">
-              AS
-            </div>
-          </div>
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2F8486d2a376774eb1b47c7714fa920de9%2F82450466b10c4407bcef9c82e054dbd1?format=webp&width=800"
+            alt="Axisphere CRM Logo"
+            className="h-24 mx-auto mb-4"
+          />
           <h1 className="text-3xl font-bold text-gray-900">Axisphere CRM</h1>
           <p className="text-gray-600 mt-2">Sales & Lead Management Platform</p>
         </div>
