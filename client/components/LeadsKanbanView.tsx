@@ -4,9 +4,6 @@ import {
   DragEndEvent,
   DragOverlay,
   closestCorners,
-  PointerSensor,
-  useSensor,
-  useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
