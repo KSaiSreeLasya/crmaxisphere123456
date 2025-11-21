@@ -26,6 +26,13 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
       label: "Dashboard",
       href: "/admin",
       icon: BarChart3,
+      adminOnly: true,
+    },
+    {
+      label: "Sales Person",
+      href: "/sales-person",
+      icon: Users,
+      salesOnly: true,
     },
     {
       label: "Sales Persons",
@@ -35,7 +42,7 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
     },
     {
       label: "Leads",
-      href: "/admin/leads",
+      href: user?.role === "admin" ? "/admin/leads" : "/leads",
       icon: TrendingUp,
     },
     {
@@ -44,7 +51,11 @@ export default function Layout({ children, showSidebar = true }: LayoutProps) {
       icon: FileText,
       adminOnly: true,
     },
-  ].filter((item) => !item.adminOnly || user?.role === "admin");
+  ].filter(
+    (item) =>
+      (!item.adminOnly || user?.role === "admin") &&
+      (!item.salesOnly || user?.role === "sales"),
+  );
 
   const isActive = (href: string) => location.pathname === href;
 
