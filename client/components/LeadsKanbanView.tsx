@@ -219,6 +219,7 @@ function LeadDetailDialog({
   onStatusChange: (leadId: string, statusId: string) => Promise<void>;
 }) {
   const [isChangingStatus, setIsChangingStatus] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   if (!lead) return null;
 
@@ -229,7 +230,6 @@ function LeadDetailDialog({
     setIsChangingStatus(true);
     try {
       await onStatusChange(lead.id, newStatusId);
-      onOpenChange(false);
     } finally {
       setIsChangingStatus(false);
     }
@@ -237,83 +237,94 @@ function LeadDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-96 overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl">{lead.name}</DialogTitle>
           <DialogDescription>{lead.company}</DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-6 mt-6">
-          <div>
-            <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-              Job Title
-            </h4>
-            <p className="text-foreground">{lead.job_title || "-"}</p>
+        <Tabs defaultValue="overview" className="flex-1 flex flex-col">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="activity">Activity Log</TabsTrigger>
+          </TabsList>
+
+          <div className="flex-1 overflow-y-auto">
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6 mt-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                    Job Title
+                  </h4>
+                  <p className="text-foreground">{lead.job_title || "-"}</p>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                    Email
+                  </h4>
+                  <p className="text-foreground break-all">{lead.email || "-"}</p>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                    Phone
+                  </h4>
+                  <p className="text-foreground">{lead.phone || "-"}</p>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                    Assigned To
+                  </h4>
+                  <p className="text-foreground">
+                    {assignedTo?.name || "Unassigned"}
+                  </p>
+                </div>
+
+                <div className="col-span-2">
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                    Status
+                  </h4>
+                  <select
+                    disabled={isChangingStatus}
+                    defaultValue={lead.status_id}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                    className="w-full px-3 py-2 border border-input rounded-lg bg-white text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {statuses.map((status) => (
+                      <option key={status.id} value={status.id}>
+                        {status.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {lead.next_reminder && (
+                  <div className="col-span-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                      Next Reminder
+                    </h4>
+                    <p className="text-foreground">
+                      {new Date(lead.next_reminder).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+
+            {/* Activity Log Tab */}
+            <TabsContent value="activity" className="mt-6">
+              <LeadActivityLog
+                key={refreshKey}
+                leadId={lead.id}
+                initialNote={lead.notes}
+                onNoteAdded={() => setRefreshKey((prev) => prev + 1)}
+              />
+            </TabsContent>
           </div>
-
-          <div>
-            <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-              Email
-            </h4>
-            <p className="text-foreground break-all">{lead.email || "-"}</p>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-              Phone
-            </h4>
-            <p className="text-foreground">{lead.phone || "-"}</p>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-              Assigned To
-            </h4>
-            <p className="text-foreground">
-              {assignedTo?.name || "Unassigned"}
-            </p>
-          </div>
-
-          <div className="col-span-2">
-            <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-              Status
-            </h4>
-            <select
-              disabled={isChangingStatus}
-              defaultValue={lead.status_id}
-              onChange={(e) => handleStatusChange(e.target.value)}
-              className="w-full px-3 py-2 border border-input rounded-lg bg-white text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {statuses.map((status) => (
-                <option key={status.id} value={status.id}>
-                  {status.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {lead.notes && (
-            <div className="col-span-2">
-              <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                Notes
-              </h4>
-              <p className="text-foreground whitespace-pre-wrap">
-                {lead.notes}
-              </p>
-            </div>
-          )}
-
-          {lead.next_reminder && (
-            <div className="col-span-2">
-              <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                Next Reminder
-              </h4>
-              <p className="text-foreground">
-                {new Date(lead.next_reminder).toLocaleDateString()}
-              </p>
-            </div>
-          )}
-        </div>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
