@@ -782,7 +782,7 @@ export default function AddLeadsPage() {
                     </div>
                   );
                 }
-                if (selectedStatus?.name === "Amount (US)") {
+                if (selectedStatus?.name === "Amount (USD)") {
                   return (
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-1">
