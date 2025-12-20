@@ -19,6 +19,8 @@ interface Lead {
   nextReminder?: string;
   note?: string;
   assignedTo?: string;
+  amountINR?: string;
+  amountUSD?: string;
 }
 
 interface LeadStatus {
@@ -61,6 +63,8 @@ export default function LeadsForm({
       nextReminder: "",
       note: "",
       assignedTo: "",
+      amountINR: "",
+      amountUSD: "",
     },
   );
 
