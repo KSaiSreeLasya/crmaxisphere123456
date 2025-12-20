@@ -611,35 +611,56 @@ export default function LeadsForm({
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">
-                Amount (INR)
+                Currency
               </label>
-              <input
-                type="number"
-                value={formData.amountINR}
-                onChange={(e) =>
-                  setFormData({ ...formData, amountINR: e.target.value })
-                }
+              <select
+                value={selectedCurrency}
+                onChange={(e) => {
+                  setSelectedCurrency(e.target.value as "INR" | "USD");
+                  setFormData({ ...formData, amountINR: "", amountUSD: "" });
+                }}
                 className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
-                placeholder="0.00"
-                step="0.01"
-              />
+              >
+                <option value="INR">INR</option>
+                <option value="USD">USD</option>
+              </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1">
-                Amount (USD)
-              </label>
-              <input
-                type="number"
-                value={formData.amountUSD}
-                onChange={(e) =>
-                  setFormData({ ...formData, amountUSD: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
-                placeholder="0.00"
-                step="0.01"
-              />
-            </div>
+            {selectedCurrency === "INR" && (
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">
+                  Amount (INR)
+                </label>
+                <input
+                  type="number"
+                  value={formData.amountINR}
+                  onChange={(e) =>
+                    setFormData({ ...formData, amountINR: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            )}
+
+            {selectedCurrency === "USD" && (
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">
+                  Amount (USD)
+                </label>
+                <input
+                  type="number"
+                  value={formData.amountUSD}
+                  onChange={(e) =>
+                    setFormData({ ...formData, amountUSD: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            )}
           </div>
 
           {/* Notes */}
