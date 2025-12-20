@@ -609,7 +609,9 @@ export default function LeadsForm({
             </div>
 
             {(() => {
-              const selectedStatus = statuses.find((s) => s.id === formData.statusId);
+              const selectedStatus = statuses.find(
+                (s) => s.id === formData.statusId,
+              );
               if (selectedStatus?.name === "Amount (INR)") {
                 return (
                   <div>
@@ -650,7 +652,6 @@ export default function LeadsForm({
               }
               return null;
             })()}
-
           </div>
 
           {/* Notes */}

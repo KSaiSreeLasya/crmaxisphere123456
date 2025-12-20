@@ -154,8 +154,12 @@ export default function AddLeadsPage() {
           status_id: statusId,
           assigned_to: formData.assignedTo || null,
           created_by: user.id,
-          amount_inr: formData.amountINR ? parseFloat(formData.amountINR) : null,
-          amount_usd: formData.amountUSD ? parseFloat(formData.amountUSD) : null,
+          amount_inr: formData.amountINR
+            ? parseFloat(formData.amountINR)
+            : null,
+          amount_usd: formData.amountUSD
+            ? parseFloat(formData.amountUSD)
+            : null,
         })
         .select()
         .single();
@@ -753,7 +757,9 @@ export default function AddLeadsPage() {
               </div>
 
               {(() => {
-                const selectedStatus = statuses.find((s) => s.id === formData.statusId);
+                const selectedStatus = statuses.find(
+                  (s) => s.id === formData.statusId,
+                );
                 if (selectedStatus?.name === "Amount (INR)") {
                   return (
                     <div>
@@ -764,7 +770,10 @@ export default function AddLeadsPage() {
                         type="number"
                         value={formData.amountINR}
                         onChange={(e) =>
-                          setFormData({ ...formData, amountINR: e.target.value })
+                          setFormData({
+                            ...formData,
+                            amountINR: e.target.value,
+                          })
                         }
                         className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
                         placeholder="0.00"
@@ -783,7 +792,10 @@ export default function AddLeadsPage() {
                         type="number"
                         value={formData.amountUSD}
                         onChange={(e) =>
-                          setFormData({ ...formData, amountUSD: e.target.value })
+                          setFormData({
+                            ...formData,
+                            amountUSD: e.target.value,
+                          })
                         }
                         className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
                         placeholder="0.00"
