@@ -22,6 +22,8 @@ interface Lead {
   nextReminder?: string;
   note?: string;
   assignedTo?: string;
+  amountINR?: string;
+  amountUSD?: string;
 }
 
 interface LeadStatus {
@@ -51,6 +53,8 @@ export default function AddLeadsPage() {
     nextReminder: "",
     note: "",
     assignedTo: "",
+    amountINR: "",
+    amountUSD: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -150,6 +154,12 @@ export default function AddLeadsPage() {
           status_id: statusId,
           assigned_to: formData.assignedTo || null,
           created_by: user.id,
+          amount_inr: formData.amountINR
+            ? parseFloat(formData.amountINR)
+            : null,
+          amount_usd: formData.amountUSD
+            ? parseFloat(formData.amountUSD)
+            : null,
         })
         .select()
         .single();
@@ -745,6 +755,57 @@ export default function AddLeadsPage() {
                   className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
                 />
               </div>
+
+              {(() => {
+                const selectedStatus = statuses.find(
+                  (s) => s.id === formData.statusId,
+                );
+                if (selectedStatus?.name === "Amount (INR)") {
+                  return (
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1">
+                        Amount (INR)
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.amountINR}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            amountINR: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
+                        placeholder="0.00"
+                        step="0.01"
+                      />
+                    </div>
+                  );
+                }
+                if (selectedStatus?.name === "Amount (US)") {
+                  return (
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1">
+                        Amount (USD)
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.amountUSD}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            amountUSD: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
+                        placeholder="0.00"
+                        step="0.01"
+                      />
+                    </div>
+                  );
+                }
+                return null;
+              })()}
             </div>
 
             {/* Notes */}
