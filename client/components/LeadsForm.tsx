@@ -63,6 +63,8 @@ export default function LeadsForm({
       nextReminder: "",
       note: "",
       assignedTo: "",
+      amountINR: "",
+      amountUSD: "",
     },
   );
 
