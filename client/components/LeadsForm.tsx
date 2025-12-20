@@ -76,6 +76,7 @@ export default function LeadsForm({
   const [linkInput, setLinkInput] = useState("");
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
   const [salesPersons, setSalesPersons] = useState<SalesPerson[]>([]);
+  const [selectedCurrency, setSelectedCurrency] = useState<"INR" | "USD">("INR");
 
   useEffect(() => {
     fetchStatuses();
