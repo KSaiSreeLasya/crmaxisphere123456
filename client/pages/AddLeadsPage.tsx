@@ -65,6 +65,7 @@ export default function AddLeadsPage() {
   const [linkInput, setLinkInput] = useState("");
   const [statuses, setStatuses] = useState<LeadStatus[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState<"INR" | "USD">("INR");
 
   useEffect(() => {
     fetchStatuses();
