@@ -154,6 +154,8 @@ export default function AddLeadsPage() {
           status_id: statusId,
           assigned_to: formData.assignedTo || null,
           created_by: user.id,
+          amount_inr: formData.amountINR ? parseFloat(formData.amountINR) : null,
+          amount_usd: formData.amountUSD ? parseFloat(formData.amountUSD) : null,
         })
         .select()
         .single();
