@@ -22,8 +22,6 @@ interface Lead {
   nextReminder?: string;
   note?: string;
   assignedTo?: string;
-  amountINR?: string;
-  amountUSD?: string;
 }
 
 interface LeadStatus {
