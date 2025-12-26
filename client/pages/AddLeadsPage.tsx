@@ -51,8 +51,6 @@ export default function AddLeadsPage() {
     nextReminder: "",
     note: "",
     assignedTo: "",
-    amountINR: "",
-    amountUSD: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
